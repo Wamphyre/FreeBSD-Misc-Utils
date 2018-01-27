@@ -55,6 +55,7 @@ sysrc hald_enable="YES"
 sysrc linux_enable="YES"
 sysrc ntpd_enable="YES"
 sysrc ntpdate_enable="YES"
+kldload linux.ko
 
 touch .xinitrc
 echo 'exec xfce4-session' >> .xinitrc
