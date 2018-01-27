@@ -42,10 +42,12 @@ pkg install -y nano curl htop wget git apache24 php71 php71-mysqli mod_php71 php
 echo Comenzando configuracion post-instalacion...
 sleep 3
 
+sysrc ntpd_enable="YES"
+sysrc ntpdate_enable="YES"
 sysrc apache24_enable="YES"
 service apache24 start
 touch /usr/local/etc/apache24/Includes/php.conf
-echo "<IfModule dir_module>
+echo '<IfModule dir_module>
 DirectoryIndex index.php index.html
 <FilesMatch "\.php$">
 SetHandler application/x-httpd-php
@@ -53,7 +55,7 @@ SetHandler application/x-httpd-php
 <FilesMatch "\.phps$">
 SetHandler application/x-httpd-php-source
 </FilesMatch>
-</IfModule>" > /usr/local/etc/apache24/Includes/php.conf
+</IfModule>' >> /usr/local/etc/apache24/Includes/php.conf
 service apache24 restart
 sysrc mysql_enable="YES"
 service mysql-server start
@@ -80,21 +82,21 @@ sysrc syslogd_flags="-ss"
 sysrc sendmail_enable="NONE"
 sysrc dumpdev="NO"
 
-echo "kern.elf64.nxstack=1" > /etc/sysctl.conf
-echo "sysctl security.bsd.map_at_zero=0" > /etc/sysctl.conf
-echo "security.bsd.see_other_uids=0" > /etc/sysctl.conf
-echo "security.bsd.see_other_gids=0" > /etc/sysctl.conf
-echo "security.bsd.unprivileged_read_msgbuf=0" > /etc/sysctl.conf
-echo "security.bsd.unprivileged_proc_debug=0" > /etc/sysctl.conf
-echo "kern.randompid=1000" > /etc/sysctl.conf
-echo "security.bsd.stack_guard_page=1" > /etc/sysctl.conf
-echo "net.inet.udp.blackhole=1" > /etc/sysctl.conf
-echo "net.inet.tcp.blackhole=2" > /etc/sysctl.conf
+echo 'kern.elf64.nxstack=1' >> /etc/sysctl.conf
+echo 'sysctl security.bsd.map_at_zero=0' >> /etc/sysctl.conf
+echo 'security.bsd.see_other_uids=0' >> /etc/sysctl.conf
+echo 'security.bsd.see_other_gids=0' >> /etc/sysctl.conf
+echo 'security.bsd.unprivileged_read_msgbuf=0' >> /etc/sysctl.conf
+echo 'security.bsd.unprivileged_proc_debug=0' >> /etc/sysctl.conf
+echo 'kern.randompid=1000' >> /etc/sysctl.conf
+echo 'security.bsd.stack_guard_page=1' >> /etc/sysctl.conf
+echo 'net.inet.udp.blackhole=1' >> /etc/sysctl.conf
+echo 'net.inet.tcp.blackhole=2' >> /etc/sysctl.conf
 
 echo Hardening Paranóico completado.
 sleep 3
 
-echo Limpiando el sistema...
+echo Limpiando y comprobando el sistema...
 sleep 4
 
 pkg update && pkg upgrade -y
