@@ -4,6 +4,8 @@ echo Version 1.0
 
 test $? -eq 0 || exit 1 "Necesitas ser root para ejecutar este script"
 
+cd
+
 echo Bienvenido al script de instalación AutoDesktop
 sleep 1
 
@@ -41,7 +43,7 @@ sleep 1
 echo Comenzando instalacion de Stack AutoDesktop...Ten paciencia.
 sleep 3
 
-pkg install -y nano xorg slim xfce xfce4-goodies thunar-archive-plugin curl wget htop
+pkg install -y nano xorg slim xfce curl wget htop
 
 echo Comenzando configuracion post-instalacion...
 sleep 3
@@ -51,10 +53,11 @@ sysrc moused_enable="YES"
 sysrc dbus_enable="YES"
 sysrc hald_enable="YES"
 sysrc linux_enable="YES"
-kldload linux.ko
+sysrc ntpd_enable="YES"
+sysrc ntpdate_enable="YES"
 
 touch .xinitrc
-echo "exec xfce4-session" > .xinitrc
+echo 'exec xfce4-session' >> .xinitrc
 
 echo Compilando e instalando los ultimos drivers NVIDIA disponibles...
 sleep 3
@@ -65,10 +68,10 @@ cd /usr/ports/x11/nvidia-settings
 make install clean BATCH=yes
 cd /usr/ports/x11/nvidia-xconfig
 make install clean BATCH=yes
-echo 'kld_list="nvidia-modeset"' > /etc/rc.conf
+echo 'nvidia-modeset_load="YES"' >> /boot/loader.conf
 nvidia-xconfig
 
-echo Instalacion y configuración driver NVIDIA finalizada
+echo Instalacion driver NVIDIA finalizada
 sleep 2
 
 echo Aplicando parámetros de Hardening Paranóico...
@@ -83,16 +86,16 @@ sysrc syslogd_flags="-ss"
 sysrc sendmail_enable="NONE"
 sysrc dumpdev="NO"
 
-echo "kern.elf64.nxstack=1" > /etc/sysctl.conf
-echo "sysctl security.bsd.map_at_zero=0" > /etc/sysctl.conf
-echo "security.bsd.see_other_uids=0" > /etc/sysctl.conf
-echo "security.bsd.see_other_gids=0" > /etc/sysctl.conf
-echo "security.bsd.unprivileged_read_msgbuf=0" > /etc/sysctl.conf
-echo "security.bsd.unprivileged_proc_debug=0" > /etc/sysctl.conf
-echo "kern.randompid=1000" > /etc/sysctl.conf
-echo "security.bsd.stack_guard_page=1" > /etc/sysctl.conf
-echo "net.inet.udp.blackhole=1" > /etc/sysctl.conf
-echo "net.inet.tcp.blackhole=2" > /etc/sysctl.conf
+echo 'kern.elf64.nxstack=1' >> /etc/sysctl.conf
+echo 'sysctl security.bsd.map_at_zero=0' >> /etc/sysctl.conf
+echo 'security.bsd.see_other_uids=0' >> /etc/sysctl.conf
+echo 'security.bsd.see_other_gids=0' >> /etc/sysctl.conf
+echo 'security.bsd.unprivileged_read_msgbuf=0' >> /etc/sysctl.conf
+echo 'security.bsd.unprivileged_proc_debug=0' >> /etc/sysctl.conf
+echo 'kern.randompid=1000' >> /etc/sysctl.conf
+echo 'security.bsd.stack_guard_page=1' >> /etc/sysctl.conf
+echo 'net.inet.udp.blackhole=1' >> /etc/sysctl.conf
+echo 'net.inet.tcp.blackhole=2' >> /etc/sysctl.conf
 
 echo Hardening Paranóico completado.
 sleep 3
@@ -104,7 +107,7 @@ pkg update && pkg upgrade -y
 pkg clean -y
 
 echo ¡Instalación finalizada¡
-echo Tu entorno de escritorio XFCE4 con drivers NVIDIA ya está instalado, configurado y securizado.
+echo Tu entorno de escritorio XFCE4 para FreeBSD con drivers NVIDIA Latest ya está instalado, configurado y securizado.
 sleep 2
 
 echo ¡¡¡¡NOTAS IMPORTANTES¡¡¡¡
