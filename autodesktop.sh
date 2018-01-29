@@ -55,6 +55,8 @@ sysrc hald_enable="YES"
 sysrc linux_enable="YES"
 sysrc ntpd_enable="YES"
 sysrc ntpdate_enable="YES"
+sysrc powerd_enable="YES"
+sysrc powerd_flags="-a hiadaptive"
 kldload linux.ko
 
 touch .xinitrc
