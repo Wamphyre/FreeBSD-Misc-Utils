@@ -42,6 +42,8 @@ pkg install -y nano curl htop wget git apache24 php71 php71-mysqli mod_php71 php
 echo Comenzando configuracion post-instalacion...
 sleep 3
 
+sysrc powerd_enable="YES"
+sysrc powerd_flags="-a hiadaptive"
 sysrc ntpd_enable="YES"
 sysrc ntpdate_enable="YES"
 sysrc apache24_enable="YES"
