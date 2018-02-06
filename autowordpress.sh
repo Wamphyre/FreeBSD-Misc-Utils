@@ -10,10 +10,10 @@ unzip -q latest.zip;
 mv wp-config-sample.php wp-config.php
 
 echo "Desactivando editor de archivos...";
-echo "define(‘DISALLOW_FILE_EDIT’, true);" >> wp-config.php
+echo 'define(‘DISALLOW_FILE_EDIT’, true);' >> wp-config.php
 
 echo "Desactivando uso de FTP para temas/plugins";
-echo "define(‘FS_METHOD’,’direct’);" >> wp-config.php
+echo 'define(‘FS_METHOD’,’direct’);' >> wp-config.php
 
 echo "Descargando e instalando W3 Total Cache...";
 wget http://downloads.wordpress.org/plugin/w3-total-cache.zip
