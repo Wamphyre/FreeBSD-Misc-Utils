@@ -37,7 +37,7 @@ sleep 1
 echo Comenzando instalacion de Stack AutoFAMP...Ten paciencia.
 sleep 3
 
-pkg install -y nano curl htop wget git apache24 php71 php71-mysqli mod_php71 php71-mbstring php71-gd php71-json php71-mcrypt php71-zlib php71-curl mariadb102-client mariadb102-server
+pkg install -y nano curl htop wget git apache24 php71 php71-mysqli mod_php71 php71-mbstring php71-gd php71-json php71-mcrypt php71-zlib php71-curl php71-session-7.1.14 mariadb102-client mariadb102-server
 
 echo Comenzando configuracion post-instalacion...
 sleep 3
@@ -63,11 +63,21 @@ sysrc mysql_enable="YES"
 service mysql-server start
 mv /usr/local/etc/php.ini-production /usr/local/etc/php.ini
 
+echo Instalando phpmyadmin...
+
+cd /usr/local/www/apache24/data/
+wget https://files.phpmyadmin.net/phpMyAdmin/4.7.7/phpMyAdmin-4.7.7-all-languages.zip
+unzip phpMyAdmin-4.7.7-all-languages.zip
+rm -rf .zip
+mv phpMyAdmin-4.7.7-all-languages phpmyadmin
+cd
+
 echo Añadiendo y corrigiendo permisos para usuario www...
 sleep 3
 
-chown -R root:www /usr/local/www/apache24/data/
-chmod -R 775 root:www /usr/local/www/apache24/data/
+chown -R www:www /usr/local/www/apache24/data/
+chown -R www:www /usr/local/www/apache24/data/*
+service apache24 restart
 
 echo Permisos corregidos 
 sleep 3
