@@ -9,12 +9,6 @@ wget http://wordpress.org/latest.zip;
 unzip -q latest.zip;
 mv wp-config-sample.php wp-config.php
 
-echo "Desactivando editor de archivos...";
-echo 'define(‘DISALLOW_FILE_EDIT’, true);' >> wp-config.php
-
-echo "Desactivando uso de FTP para temas/plugins";
-echo 'define(‘FS_METHOD’,’direct’);' >> wp-config.php
-
 echo "Descargando e instalando W3 Total Cache...";
 wget http://downloads.wordpress.org/plugin/w3-total-cache.zip
 unzip -q  w3-total-cache.zip;
@@ -41,5 +35,15 @@ echo "Reparando y estableciendo permisos..."
 chown www:www .htaccess
 find . -type f -exec chmod 664 {} +
 find . -type d -exec chmod 775 {} +
+
+echo "Desactivando editor de archivos...";
+echo "
+/* Disable the file editor */
+define(‘DISALLOW_FILE_EDIT’, true);" >> wp-config.php
+
+echo "Desactivando uso de FTP para temas/plugins...";
+echo "
+/* Disable the FTP */
+define(‘FS_METHOD’,’direct’);" >> wp-config.php
 
 echo "Finalizado!";
