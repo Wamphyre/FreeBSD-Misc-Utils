@@ -17,9 +17,6 @@ mv w3-total-cache wordpress/wp-content/plugins/
 echo "Limpiando directorio y archivos temporales...";
 rm *.zip
 
-mv wordpress/* .;
-rm -rf wordpress;
-
 echo "Creando htaccess..."
 touch .htaccess
 echo '<IfModule mod_rewrite.c>
@@ -35,6 +32,9 @@ echo "Reparando y estableciendo permisos..."
 chown www:www .htaccess
 find . -type f -exec chmod 664 {} +
 find . -type d -exec chmod 775 {} +
+
+mv wordpress/* .;
+rm -rf wordpress;
 
 echo "Desactivando editor de archivos...";
 echo "define(‘DISALLOW_FILE_EDIT’, true);" >> wp-config.php
