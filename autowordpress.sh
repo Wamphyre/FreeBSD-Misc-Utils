@@ -32,6 +32,7 @@ RewriteRule . /index.php [L]
 
 echo "Reparando y estableciendo permisos..."
 chown www:www .htaccess
+chown -R www:www /usr/local/www/apache24/data/*
 find . -type f -exec chmod 664 {} +
 find . -type d -exec chmod 775 {} +
 
