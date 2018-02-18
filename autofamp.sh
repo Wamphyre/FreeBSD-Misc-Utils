@@ -38,7 +38,7 @@ sleep 1
 echo Comenzando instalacion de Stack AutoFAMP...Ten paciencia.
 sleep 3
 
-pkg install -y nano curl htop wget git nginx apache24 mariadb102-client mariadb102-server php71-pdo php71-xml php71-filter php71-posix php71-bcmath php71-zip php71 php71-mysqli mod_php71 php71-mbstring php71-gd php71-json php71-mcrypt php71-zlib php71-curl php71-session;
+pkg install -y nano curl htop wget git nginx apache24 mariadb102-client mariadb102-server php71-pdo php71-pdo_mysql php71-xml php71-filter php71-posix php71-bcmath php71-zip php71 php71-mysqli mod_php71 php71-mbstring php71-gd php71-json php71-mcrypt php71-zlib php71-curl php71-session;
 
 echo Comenzando configuracion post-instalacion...
 sleep 3
