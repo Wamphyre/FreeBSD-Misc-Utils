@@ -45,7 +45,7 @@ sleep 3
 
 pkg install -y nano xorg slim xfce curl wget htop
 sleep 3
-pkg install xarchiver-0.5.4.7 zip rar xfce4-volumed-pulse-0.2.2 xfce4-goodies-4.12_1 thunar-archive-plugin numix-theme-2.6.7 mate-icon-theme-faenza-1.18.1 slim-themes-1.0.1_1 iridium-browser-58.0_12 deadbeef filezilla bluefish gimp claws-mail-3.16.0 openshot frei0r-plugins audacity jamin transmission-2.92  
+pkg install xarchiver-0.5.4.7 zip rar xfce4-mixer xfce4-goodies-4.12_1 thunar-archive-plugin numix-theme-2.6.7 mate-icon-theme-faenza-1.18.1 slim-themes-1.0.1_1 chromium deadbeef filezilla bluefish gimp claws-mail-3.16.0 openshot frei0r-plugins audacity jamin transmission-2.92 -y  
 echo Comenzando configuracion post-instalacion...
 sleep 3
 
