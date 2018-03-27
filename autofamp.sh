@@ -2,45 +2,45 @@
 echo AutoFAMP by Wamphyre
 echo Version 1.0
 
-test $? -eq 0 || exit 1 "Necesitas ser root para ejecutar este script"
+test $? -eq 0 || exit 1 "Necesitas ser root para ejecutar este script";
 
-echo Bienvenido al script de instalación AutoFAMP.
+echo Bienvenido al script de instalación AutoFAMP;
 sleep 1
 
-echo ¡¡ADVERTENCIA¡¡ Este Script debe ejecutarse en un sistema FreeBSD recien instalado y limpio.
-echo "Se recomienda utilizar FreeBSD 11.1"
-echo Vamos a actualizar los repositorios de FreeBSD...
-echo "Tienes 10 segundos para comenzar el proceso o cancelarlo pulsando ctrl+c"
+echo ¡¡ADVERTENCIA¡¡ Este Script debe ejecutarse en un sistema FreeBSD recien instalado y limpio;
+echo Se recomienda utilizar FreeBSD 11.1;
+echo Vamos a actualizar los repositorios de FreeBSD;
+echo Tienes 10 segundos para comenzar el proceso o cancelarlo pulsando ctrl+c;
 sleep 10
 
-echo Iniciando actualizacion...
-pkg update && pkg upgrade -y
+echo Iniciando actualizacion...;
+pkg update && pkg upgrade -y;
 
-echo Repositorios y paquetes actualizados.
+echo Repositorios y paquetes actualizados;
 sleep 1
 
-echo Comenzando actualización del sistema base...
+echo Comenzando actualización del sistema base...;
 sleep 3
 
-freebsd-update fetch && freebsd-update install
+freebsd-update fetch && freebsd-update install;
 
-echo Sistema Operativo actualizado
+echo Sistema Operativo actualizado;
 sleep 2
 
-echo Actualizando y extrayendo el arbol de ports...
+echo Actualizando y extrayendo el arbol de ports...;
 sleep 4
 
-portsnap fetch extract
+portsnap fetch extract;
 
-echo Arbol de ports actualizado.
+echo Arbol de ports actualizado.;
 sleep 1
 
-echo Comenzando instalacion de Stack AutoFAMP...Ten paciencia.
+echo Comenzando instalacion de Stack AutoFAMP...Ten paciencia.;
 sleep 3
 
-pkg install -y nano curl htop wget git nginx apache24 mariadb102-client mariadb102-server php71-pdo php71-pdo_mysql php71-xml php71-filter php71-posix php71-bcmath php71-zip php71 php71-mysqli mod_php71 php71-mbstring php71-gd php71-json php71-mcrypt php71-zlib php71-curl php71-session;
+pkg install nano curl htop wget git nginx apache24 mariadb102-client mariadb102-server php71-pdo php71-pdo_mysql php71-xml php71-filter php71-posix php71-bcmath php71-zip php71 php71-mysqli mod_php71 php71-mbstring php71-gd php71-json php71-mcrypt php71-zlib php71-curl php71-session -y;
 
-echo Comenzando configuracion post-instalacion...
+echo Comenzando configuracion post-instalacion...;
 sleep 3
 
 sysrc powerd_enable="YES"
@@ -48,8 +48,11 @@ sysrc powerd_flags="-a hiadaptive"
 sysrc ntpd_enable="YES"
 sysrc ntpdate_enable="YES"
 sysrc apache24_enable="YES"
-service apache24 start
+
+service apache24 start;
+
 touch /usr/local/etc/apache24/Includes/php.conf
+
 echo '<IfModule dir_module>
 DirectoryIndex index.php index.html
 <FilesMatch "\.php$">
@@ -58,13 +61,17 @@ SetHandler application/x-httpd-php
 <FilesMatch "\.phps$">
 SetHandler application/x-httpd-php-source
 </FilesMatch>
-</IfModule>' >> /usr/local/etc/apache24/Includes/php.conf
-service apache24 restart
-sysrc mysql_enable="YES"
-service mysql-server start
-mv /usr/local/etc/php.ini-production /usr/local/etc/php.ini.original
+</IfModule>' >> /usr/local/etc/apache24/Includes/php.conf;
 
-cd /usr/local/etc/
+service apache24 restart;
+
+sysrc mysql_enable="YES"
+
+service mysql-server start;
+
+mv /usr/local/etc/php.ini-production /usr/local/etc/php.ini.original;
+
+cd /usr/local/etc/;
 
 wget nekromancerecords.tk/php.zip
 
@@ -72,12 +79,12 @@ unzip php.zip
 
 rm -rf *.zip
 
-echo Comenzando configuración de NGINX como proxy inverso de APACHE...
+echo Comenzando configuración de NGINX como proxy inverso de APACHE...;
 sleep 3
 
-mv /usr/local/etc/apache24/httpd.conf /usr/local/etc/apache24/httpd.conf.original
+mv /usr/local/etc/apache24/httpd.conf /usr/local/etc/apache24/httpd.conf.original;
 
-cd /usr/local/etc/apache24/
+cd /usr/local/etc/apache24/;
 
 wget nekromancerecords.tk/httpd.zip
 
@@ -85,9 +92,9 @@ unzip httpd.zip
 
 rm -rf *.zip
 
-cd /usr/local/etc/nginx/
-mv nginx.conf nginx.conf.original
-touch nginx.conf
+cd /usr/local/etc/nginx/;
+mv nginx.conf nginx.conf.original;
+touch nginx.conf;
 
 echo 'user  www;
 worker_processes  1;
@@ -143,7 +150,7 @@ include /usr/local/etc/nginx/proxy.conf;
 
 include /usr/local/etc/nginx/vhost/*;
 
-}' >> nginx.conf
+}' >> nginx.conf;
 
 touch proxy.conf
 
@@ -158,19 +165,19 @@ proxy_connect_timeout   90;
 proxy_send_timeout      90;
 proxy_read_timeout      90;
 proxy_buffers           100 8k;
-add_header              X-Cache $upstream_cache_status;' >> proxy.conf
+add_header              X-Cache $upstream_cache_status;' >> proxy.conf;
 
-mkdir -p /var/nginx/cache
+mkdir -p /var/nginx/cache;
 
 cd /usr/local/etc/nginx/
 mkdir vhost
 cd vhost/
 
-echo "Creando VHOST NGINX dominio principal..."
+echo "Creando VHOST NGINX dominio principal...";
 
 sleep 2
 
-touch vhost_first.conf
+touch vhost_first.conf;
 
 echo 'server {
 # Replace with your FreeBSD Server IP
@@ -214,18 +221,18 @@ proxy_cache my-cache;
 access_log off;
 }
 
-}' >> vhost_first.conf
+}' >> vhost_first.conf;
 
 mkdir -p /var/log/nginx/
 
 sleep 2
 
 sysrc nginx_enable=yes
-service nginx start
-service apache24 restart
-service nginx restart
+service nginx start;
+service apache24 restart;
+service nginx restart;
 
-echo Configuracion NGINX como proxy inverso de APACHE finalizada.
+echo Configuracion NGINX como proxy inverso de APACHE finalizada.;
 
 echo Instalando Varnish...
 
@@ -239,24 +246,25 @@ sysrc varnishd_admin=":8081"
 
 echo Instalando phpmyadmin...
 
-cd /usr/local/www/apache24/data/
-wget https://files.phpmyadmin.net/phpMyAdmin/4.7.7/phpMyAdmin-4.7.7-all-languages.zip
-unzip phpMyAdmin-4.7.7-all-languages.zip
-rm -rf *.zip
-mv phpMyAdmin-4.7.7-all-languages phpmyadmin
+cd /usr/local/www/apache24/data/;
+wget https://files.phpmyadmin.net/phpMyAdmin/4.7.7/phpMyAdmin-4.7.7-all-languages.zip;
+unzip phpMyAdmin-4.7.7-all-languages.zip;
+rm -rf *.zip;
+mv phpMyAdmin-4.7.7-all-languages phpmyadmin;
 cd
 
-echo Añadiendo y corrigiendo permisos para usuario www...
+echo Añadiendo y corrigiendo permisos para usuario www...;
 sleep 3
 
 chown -R www:www /usr/local/www/apache24/data/
 chown -R www:www /usr/local/www/apache24/data/*
+
 service apache24 restart
 
 echo Permisos corregidos 
 sleep 3
 
-echo Aplicando parámetros de Hardening Paranóico...
+echo Aplicando parámetros de Hardening Paranóico...;
 sleep 3
 
 pkg audit -F
@@ -268,18 +276,18 @@ sysrc syslogd_flags="-ss"
 sysrc sendmail_enable="NONE"
 sysrc dumpdev="NO"
 
-echo 'kern.elf64.nxstack=1' >> /etc/sysctl.conf
-echo 'sysctl security.bsd.map_at_zero=0' >> /etc/sysctl.conf
-echo 'security.bsd.see_other_uids=0' >> /etc/sysctl.conf
-echo 'security.bsd.see_other_gids=0' >> /etc/sysctl.conf
-echo 'security.bsd.unprivileged_read_msgbuf=0' >> /etc/sysctl.conf
-echo 'security.bsd.unprivileged_proc_debug=0' >> /etc/sysctl.conf
-echo 'kern.randompid=1000' >> /etc/sysctl.conf
-echo 'security.bsd.stack_guard_page=1' >> /etc/sysctl.conf
-echo 'net.inet.udp.blackhole=1' >> /etc/sysctl.conf
-echo 'net.inet.tcp.blackhole=2' >> /etc/sysctl.conf
+echo 'kern.elf64.nxstack=1' >> /etc/sysctl.conf;
+echo 'sysctl security.bsd.map_at_zero=0' >> /etc/sysctl.conf;
+echo 'security.bsd.see_other_uids=0' >> /etc/sysctl.conf;
+echo 'security.bsd.see_other_gids=0' >> /etc/sysctl.conf;
+echo 'security.bsd.unprivileged_read_msgbuf=0' >> /etc/sysctl.conf;
+echo 'security.bsd.unprivileged_proc_debug=0' >> /etc/sysctl.conf;
+echo 'kern.randompid=1000' >> /etc/sysctl.conf;
+echo 'security.bsd.stack_guard_page=1' >> /etc/sysctl.conf;
+echo 'net.inet.udp.blackhole=1' >> /etc/sysctl.conf;
+echo 'net.inet.tcp.blackhole=2' >> /etc/sysctl.conf;
 
-echo Hardening Paranóico completado.
+echo Hardening Paranóico completado.;
 sleep 3
 
 echo Limpiando y comprobando el sistema...
@@ -292,18 +300,18 @@ echo ¡Instalación finalizada!
 echo Tu servidor FAMP ya está instalado, configurado y securizado.
 sleep 2
 
-echo ¡¡¡¡NOTAS IMPORTANTES¡¡¡¡
-echo Recuerda que tus webs se almacenarán por defecto en /usr/local/www/apache24/data/
-echo Puedes modificar el fichero httpd.conf en /usr/local/etc/apache24/httpd.conf
-echo Modifica el fichero nginx.conf con la IP de tu servidor
-echo "No olvides revisar el fichero /usr/local/etc/nginx/vhost/vhost_test.conf para configurar correctamente tus webs usando NGINX como proxy inverso de APACHE"
-echo Puedes modificar php.ini en /usr/local/etc/php.ini
-echo Puedes ver los logs del sistema en /var/log
-echo Puedes añadir tus propias reglas al Firewall en /etc/pf.conf
-echo "Tienes Varnish funcionando en el puerto 10000 configura tus plugins de cache compatibles por este puerto"
+echo ¡¡¡¡NOTAS IMPORTANTES¡¡¡¡;
+echo Recuerda que tus webs se almacenarán por defecto en /usr/local/www/apache24/data/;
+echo Puedes modificar el fichero httpd.conf en /usr/local/etc/apache24/httpd.conf;
+echo Modifica el fichero nginx.conf con la IP de tu servidor;
+echo "No olvides revisar el fichero /usr/local/etc/nginx/vhost/vhost_test.conf para configurar correctamente tus webs usando NGINX como proxy inverso de APACHE";
+echo Puedes modificar php.ini en /usr/local/etc/php.ini;
+echo Puedes ver los logs del sistema en /var/log;
+echo Puedes añadir tus propias reglas al Firewall en /etc/pf.conf;
+echo "Tienes Varnish funcionando en el puerto 10000 configura tus plugins de cache compatibles por este puerto";
 sleep 10
 
-echo Reinicia el equipo para disfrutar de tu nuevo servidor FAMP
-echo "Ejecuta luego el siguiente comando /usr/local/bin/mysql_secure_installation"
+echo Reinicia el equipo para disfrutar de tu nuevo servidor FAMP;
+echo "Ejecuta luego el siguiente comando /usr/local/bin/mysql_secure_installation";
 
-echo COMPLETADO
+echo COMPLETADO;
