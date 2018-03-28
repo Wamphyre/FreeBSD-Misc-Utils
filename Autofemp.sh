@@ -4,7 +4,7 @@ echo Version 1.0
 
 echo 'Bienvenido al script de instalación de AutoFEMP';
 
-echo 'Esto instalará NGINX, PHP 7.1, MariaDB, Varnish y phpmyadmin en tu máquina';
+echo 'Esto instalará NGINX, PHP 7.1, PHP-FPM, MariaDB, Varnish y phpmyadmin en tu máquina';
 
 echo 'Tienes 10 segundos para cancelar la instalación...';
 
@@ -33,14 +33,6 @@ cd /usr/local/etc/nginx;
 mv nginx.conf nginx.conf_original;
 
 touch nginx.conf;
-
-echo 'location ~ \.php$ {
-root	/usr/local/www/nginx;
-fastcgi_pass   127.0.0.1:9000;
-fastcgi_index  index.php;
-fastcgi_param SCRIPT_FILENAME $request_filename;    
-include        fastcgi_params;
-}' >> nginx.conf;
 
 echo 'user  www;
 worker_processes  1;
@@ -79,6 +71,14 @@ stub_status on;
 access_log off;
 }
 
+location ~ \.php$ {
+root	/usr/local/www/nginx;
+fastcgi_pass   127.0.0.1:9000;
+fastcgi_index  index.php;
+fastcgi_param SCRIPT_FILENAME $request_filename;    
+include        fastcgi_params;
+}
+
 # redirect server error pages to the static page /50x.html
 #
 error_page   500 502 503 504  /50x.html;
@@ -101,7 +101,7 @@ touch vhost_test.conf;
 
 echo 'server {
 # Replace with your FreeBSD Server IP
-listen 127.0.0.1:80;
+listen 127.0.0.1:8080;
 
 # Document Root
 root /usr/local/www/nginx/;
@@ -123,20 +123,13 @@ proxy_cache_key "$scheme$host$request_uri";
 
 }
 
-# Disable Cache for the file type html, json
-location ~* .(?:manifest|appcache|html?|xml|json)$ {
-expires -1;
-}
-
 # Enable Cache the file 30 days
-location ~* .(jpg|png|gif|jpeg|css|mp3|wav|swf|mov|doc|pdf|xls|ppt|docx|pptx|xlsx)$ {
 proxy_cache_valid 200 120m;
 expires 30d;
 proxy_cache my-cache;
 access_log off;
-}
 
-}' >> vhost_test.conf;
+' >> vhost_test.conf;
 
 cd;
 
