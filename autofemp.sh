@@ -66,7 +66,12 @@ listen       8080;
 server_name  localhost;
 
 location /nginx_status {
+location / {
 
+root /usr/local/www/nginx;
+index index.php index.html index.htm
+
+}
 stub_status on;
 access_log off;
 }
