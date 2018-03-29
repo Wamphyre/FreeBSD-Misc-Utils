@@ -53,7 +53,14 @@ echo 'server {
         index  index.php index.html index.htm;
         error_log  /var/log/nginx/mydomain-error.log;
         access_log /var/log/nginx/mydomain-access.log main;
+        location ~ \.php$ {
+            fastcgi_pass   127.0.0.1:9000;
+            fastcgi_index  index.php;
+            fastcgi_param  SCRIPT_FILENAME  /usr/local/www/nginx$fastcgi_script_name;
+            include        fastcgi_params;
+
         }
+}
 }' >> vhost_test.conf;
 
 cd;
