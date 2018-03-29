@@ -39,6 +39,7 @@ unzip nginx.zip;
 rm -rf *.zip;
 
 mkdir -p /var/nginx/cache;
+mkdir -p /var/nginx/tmp;
 mkdir -p /var/log/nginx/;
 cd /usr/local/etc/nginx/;
 mkdir vhost;
@@ -58,8 +59,21 @@ echo 'server {
             fastcgi_index  index.php;
             fastcgi_param  SCRIPT_FILENAME  /usr/local/www/nginx$fastcgi_script_name;
             include        fastcgi_params;
-
-        }
+        proxy_cache my-cache;
+        proxy_cache_valid 10s;
+        proxy_no_cache $cookie_PHPSESSID;
+        proxy_cache_bypass $cookie_PHPSESSID;
+        proxy_cache_key "$scheme$host$request_uri";
+}
+        location ~* .(?:manifest|appcache|html?|xml|json)$ {
+        expires -1;
+}
+        location ~* .(jpg|png|gif|jpeg|css|mp3|wav|swf|mov|doc|pdf|xls|ppt|docx|pptx|xlsx)$ {
+        proxy_cache_valid 200 120m;
+        expires 30d;
+        proxy_cache my-cache;
+        access_log off;
+}
 }
 }' >> vhost_test.conf;
 
