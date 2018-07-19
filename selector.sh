@@ -79,7 +79,7 @@ if [ "$de" = "xfce" ]
 
 then
 
-pkg install -y xorg slim xfce nano htop xarchiver zip rar xfce4-volumed-pulse xfce4-pulseaudio-plugin xfce4-goodies thunar-archive-plugin xfce-evolution mate-icon-theme-faenza slim-themes deadbeef vlc transmission filezilla bluefish gimp
+pkg install -y xorg slim xfce nano htop xarchiver zip rar xfce4-volumed-pulse xfce4-pulseaudio-plugin thunar-archive-plugin xfce-evolution mate-icon-theme-faenza slim-themes deadbeef vlc transmission filezilla bluefish gimp
 
 sysrc moused_enable="YES"
 
@@ -335,12 +335,19 @@ echo ""
 
 sleep 2
 
+touch /etc/pf.conf
+echo 'block in all' >> /etc/pf.conf
+echo 'pass out all keep state' >> /etc/pf.conf
+sysrc pf_enable="YES"
+sysrc pf_rules="/etc/pf.conf" 
+sysrc pf_flags=""
+sysrc pflog_enable="YES"
+sysrc pflog_logfile="/var/log/pflog"
+sysrc pflog_flags=""
 sysrc ntpd_enable="YES"
 sysrc ntpdate_enable="YES"
 sysrc powerd_enable="YES"
 sysrc powerd_flags="-a hiadaptive"
-sysrc pf_enable="YES"
-sysrc pflog_enable="YES"
 sysrc clear_tmp_enable="YES"
 sysrc syslogd_flags="-ss"
 sysrc sendmail_enable="NONE"
@@ -372,6 +379,7 @@ echo 'kern.randompid=9800' >> /etc/sysctl.conf
 echo 'security.bsd.stack_guard_page=1' >> /etc/sysctl.conf
 echo 'net.inet.udp.blackhole=1' >> /etc/sysctl.conf
 echo 'net.inet.tcp.blackhole=2' >> /etc/sysctl.conf
+echo 'net.inet.ip.random_id=1' >> /etc/sysctl.conf
 
 sleep 1
 
