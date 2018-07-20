@@ -359,6 +359,24 @@ sleep 2
 
 echo ""
 
+echo "Actualizando microcódigo de la CPU..."
+
+echo ""
+
+sleep 2
+
+pkg install -y devcpu-data
+
+sysrc microcode_update_enable="YES"
+
+service microcode_update start
+
+echo ""
+
+echo "Microcódigo actualizado"
+
+echo ""
+
 echo "Aplicando Hardening"
 
 sleep 2
