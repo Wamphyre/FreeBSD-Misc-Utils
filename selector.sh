@@ -354,6 +354,25 @@ echo 'hw.snd.maxautovchans=32' >> /etc/sysctl.conf
 echo 'vfs.lorunningspace=1048576' >> /etc/sysctl.conf
 echo 'vfs.hirunningspace=5242880' >> /etc/sysctl.conf
 echo 'kern.ipc.shm_allow_removed=1' >> /etc/sysctl.conf
+echo 'hint.pcm.0.eq="1"' >> /boot/loader.conf
+echo 'hint.pcm.1.eq="1"' >> /boot/loader.conf
+echo 'hint.pcm.2.eq="1"' >> /boot/loader.conf
+echo 'hint.pcm.3.eq="1"' >> /boot/loader.conf
+echo 'hint.pcm.4.eq="1"' >> /boot/loader.conf
+echo 'hint.pcm.5.eq="1"' >> /boot/loader.conf
+echo 'hint.pcm.6.eq="1"' >> /boot/loader.conf
+echo 'hint.pcm.7.eq="1"' >> /boot/loader.conf
+echo 'hint.pcm.8.eq="1"' >> /boot/loader.conf
+echo 'hint.pcm.9.eq="1"' >> /boot/loader.conf
+echo 'hw.snd.vpc_autoreset=0' >> /boot/loader.conf
+echo 'hw.syscons.bell=0' >> /boot/loader.conf
+echo 'hw.usb.no_pf=1' >> /boot/loader.conf
+echo 'hw.usb.no_boot_wait=0' >> /boot/loader.conf
+echo 'hw.usb.no_shutdown_wait=1' >> /boot/loader.conf
+echo 'hw.psm.synaptics_support=1' >> /boot/loader.conf
+echo 'kern.maxfiles="25000"' >> /boot/loader.conf
+echo 'kern.maxusers=16' >> /boot/loader.conf
+echo 'kern.cam.scsi_delay=10000' >> /boot/loader.conf
 touch /etc/pf.conf
 echo 'block in all' >> /etc/pf.conf
 echo 'pass out all keep state' >> /etc/pf.conf
