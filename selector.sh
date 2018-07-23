@@ -353,6 +353,7 @@ echo 'hw.snd.feeder_rate_quality=3' >> /etc/sysctl.conf
 echo 'hw.snd.maxautovchans=32' >> /etc/sysctl.conf
 echo 'vfs.lorunningspace=1048576' >> /etc/sysctl.conf
 echo 'vfs.hirunningspace=5242880' >> /etc/sysctl.conf
+echo 'kern.ipc.shm_allow_removed=1' >> /etc/sysctl.conf
 touch /etc/pf.conf
 echo 'block in all' >> /etc/pf.conf
 echo 'pass out all keep state' >> /etc/pf.conf
