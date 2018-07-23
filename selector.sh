@@ -91,7 +91,7 @@ sysrc slim_enable="YES"
 
 echo ""
 
-echo ; read -p "¿Estás usando un Mac?: " Y;
+echo ; read -p "¿Estás usando un Macbook?: " Y;
 
 echo ""
 
@@ -159,7 +159,7 @@ sysrc slim_enable="YES"
 
 echo ""
 
-echo ; read -p "¿Estás usando un Mac?: " Y;
+echo ; read -p "¿Estás usando un Macbook?: " Y;
 
 echo ""
 
@@ -335,6 +335,24 @@ echo ""
 
 sleep 2
 
+mv /etc/sysctl.conf /etc/sysctl.conf.bk
+echo 'vfs.usermount=1' >> /etc/sysctl.conf
+echo 'vfs.vmiodirenable=0' >> /etc/sysctl.conf
+echo 'vfs.read_max=4' >> /etc/sysctl.conf
+echo 'kern.ipc.shmmax=67108864' >> /etc/sysctl.conf
+echo 'kern.ipc.shmall=32768' >> /etc/sysctl.conf
+echo 'kern.ipc.somaxconn=256' >> /etc/sysctl.conf
+echo 'kern.ipc.shm_use_phys=1' >> /etc/sysctl.conf
+echo 'kern.ipc.somaxconn=32' >> /etc/sysctl.conf
+echo 'kern.maxvnodes=60000' >> /etc/sysctl.conf
+echo 'kern.coredump=0' >> /etc/sysctl.conf
+echo 'kern.sched.preempt_thresh=224' >> /etc/sysctl.conf
+echo 'kern.sched.slice=3' >> /etc/sysctl.conf
+echo 'kern.maxfiles=10000' >> /etc/sysctl.conf
+echo 'hw.snd.feeder_rate_quality=3' >> /etc/sysctl.conf
+echo 'hw.snd.maxautovchans=32' >> /etc/sysctl.conf
+echo 'vfs.lorunningspace=1048576' >> /etc/sysctl.conf
+echo 'vfs.hirunningspace=5242880' >> /etc/sysctl.conf
 touch /etc/pf.conf
 echo 'block in all' >> /etc/pf.conf
 echo 'pass out all keep state' >> /etc/pf.conf
@@ -382,8 +400,6 @@ echo "Aplicando Hardening"
 sleep 2
 
 echo ""
-
-mv /etc/sysctl.conf /etc/sysctl.conf.bk
 
 touch /etc/sysctl.conf
 
