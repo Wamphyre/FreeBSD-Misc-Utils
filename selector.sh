@@ -73,6 +73,12 @@ echo "MATE"
 
 echo ""
 
+sleep 1
+
+echo "OPENBOX"
+
+echo ""
+
 echo ; read -p "¿Qué entorno quieres instalar?: " de ;
 
 if [ "$de" = "xfce" ]
@@ -206,6 +212,97 @@ echo 'exec mate-session' >> /usr/home/$user/.xinitrc
 echo ""
 
 echo "$user habilitado"
+
+else fi
+
+echo ""
+
+elif [ "$de" = "openbox" ]
+
+then
+
+pkg install -y openbox openbox-themes obconf obmenu obkey menumaker scrot compton lxappearance nitrogen tint2
+
+sysrc moused_enable="YES"
+
+sysrc dbus_enable="YES"
+
+sysrc hald_enable="YES"
+
+sysrc slim_enable="YES"
+
+echo ""
+
+echo ; read -p "¿Estás usando un Macbook?: " Y;
+
+echo ""
+
+if [ "$Y" = "si" ]
+
+then
+
+sysrc moused_enable="NO"
+
+echo 'wsp_load="YES"' >> /boot/loader.conf
+
+echo ""
+
+echo "Driver para el touchpad de Mac cargado"
+
+sleep 1
+
+echo ""
+
+else fi
+
+cd
+
+touch .xinitrc
+
+echo "exec openbox-session" >> .xinitrc
+
+echo ""
+
+echo ; read -p "¿Quieres habilitar OpenBox para otro usuario?: " Z;
+
+echo ""
+
+if [ "$Z" = "si" ]
+
+then
+
+echo ; read -p "Dime usuario: " user;
+
+touch /usr/home/$user/.xinitrc
+
+echo "exec openbox-session" >> /usr/home/$user/.xinitrc
+
+echo ""
+
+echo "$user habilitado"
+
+cd /usr/home/$user/
+
+mkdir .config/openbox
+
+cp /usr/local/etc/xdg/openbox/* /usr/home/$user/.config/openbox/
+
+pw groupmod video -m $user
+
+echo '#Barra de tareas
+tint2 &' >> /.config/openbox/autostart 
+
+echo '#Compositor de ventanas
+compton -CcGF &' >> /.config/openbox/autostart
+
+echo '#Wallpaper
+nitrogen --restore &' >> /.config/openbox/autostart
+
+echo '#conky
+conky &' >> /.config/openbox/autostart
+
+echo '#volumeicon
+volumeicon &' >> /.config/openbox/autostart
 
 else fi
 
