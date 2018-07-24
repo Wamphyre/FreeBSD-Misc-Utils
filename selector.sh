@@ -221,7 +221,7 @@ elif [ "$de" = "openbox" ]
 
 then
 
-pkg install -y openbox openbox-themes obconf obmenu obkey menumaker scrot compton lxappearance nitrogen tint2
+pkg install -y xorg nano htop curl openbox openbox-themes obconf obmenu obkey menumaker scrot compton lxappearance nitrogen tint2
 
 sysrc moused_enable="YES"
 
