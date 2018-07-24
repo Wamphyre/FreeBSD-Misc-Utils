@@ -271,7 +271,7 @@ if [ "$Y" = "si" ]
 
 then
 
-pkg -y virtualbox-ose-additions
+pkg install -y virtualbox-ose-additions
 
 sysrc vboxguest_enable="YES"
 
