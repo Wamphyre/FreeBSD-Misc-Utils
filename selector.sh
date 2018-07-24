@@ -73,12 +73,6 @@ echo "MATE"
 
 echo ""
 
-sleep 1
-
-echo "OPENBOX"
-
-echo ""
-
 echo ; read -p "¿Qué entorno quieres instalar?: " de ;
 
 if [ "$de" = "xfce" ]
