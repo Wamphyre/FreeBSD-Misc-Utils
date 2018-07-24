@@ -289,21 +289,6 @@ cp /usr/local/etc/xdg/openbox/* /usr/home/$user/.config/openbox/
 
 pw groupmod video -m $user
 
-echo '#Barra de tareas
-tint2 &' >> /.config/openbox/autostart 
-
-echo '#Compositor de ventanas
-compton -CcGF &' >> /.config/openbox/autostart
-
-echo '#Wallpaper
-nitrogen --restore &' >> /.config/openbox/autostart
-
-echo '#conky
-conky &' >> /.config/openbox/autostart
-
-echo '#volumeicon
-volumeicon &' >> /.config/openbox/autostart
-
 else fi
 
 echo ""
