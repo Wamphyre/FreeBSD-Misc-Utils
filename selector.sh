@@ -442,7 +442,7 @@ echo ""
 touch /etc/sysctl.conf
 
 echo 'kern.elf64.nxstack=1' >> /etc/sysctl.conf
-echo 'sysctl security.bsd.map_at_zero=0' >> /etc/sysctl.conf
+echo 'security.bsd.map_at_zero=0' >> /etc/sysctl.conf
 echo 'security.bsd.see_other_uids=0' >> /etc/sysctl.conf
 echo 'security.bsd.see_other_gids=0' >> /etc/sysctl.conf
 echo 'security.bsd.unprivileged_read_msgbuf=0' >> /etc/sysctl.conf
