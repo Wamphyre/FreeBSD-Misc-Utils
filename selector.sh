@@ -265,6 +265,24 @@ fi
 
 echo ""
 
+echo ; read -p "¿Es esto una máquina virtual Virtualbox?: " Y;
+
+if [ "$Y" = "si" ]
+
+then
+
+pkg -y virtualbox-ose-additions
+
+sysrc vboxguest_enable="YES"
+
+sysrc vboxservice_enable="YES"
+
+sysrc vboxservice_flags="--disable-timesync"
+
+else fi
+
+echo ""
+
 echo ; read -p "¿Quieres compilar los drivers de NVIDIA?: " gpu;
 
 echo ""
