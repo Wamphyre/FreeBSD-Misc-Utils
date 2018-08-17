@@ -538,7 +538,7 @@ sleep 3
 
 echo ""
 
-else "No se optimizará la máquina como servidor" fi
+else echo "No se optimizará la máquina como servidor"; fi
 
 echo "Limpiando Sistema"
 
