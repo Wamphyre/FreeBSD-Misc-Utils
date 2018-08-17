@@ -372,6 +372,12 @@ echo 'hw.snd.maxautovchans=32' >> /etc/sysctl.conf
 echo 'vfs.lorunningspace=1048576' >> /etc/sysctl.conf
 echo 'vfs.hirunningspace=5242880' >> /etc/sysctl.conf
 echo 'kern.ipc.shm_allow_removed=1' >> /etc/sysctl.conf
+echo 'snd_hda="YES"' >> /boot/loader.conf
+echo 'mixer_enable="YES"' >> /boot/loader.conf
+echo 'hint.pcm.0.buffersize=65536' >> /boot/loader.conf
+echo 'hint.pcm.1.buffersize=65536' >> /boot/loader.conf
+echo 'hw.snd.feeder_buffersize=65536' >> /boot/loader.conf
+echo 'hw.snd.latency=0' >> /boot/loader.conf
 echo 'hint.pcm.0.eq="1"' >> /boot/loader.conf
 echo 'hint.pcm.1.eq="1"' >> /boot/loader.conf
 echo 'hint.pcm.2.eq="1"' >> /boot/loader.conf
@@ -476,6 +482,63 @@ echo ""
 echo "Sistema Securizado"
 
 echo ""
+
+echo -p read "¿Será este equipo un Servidor Web o un NAS?: " servidor;
+
+if [ "$servidor" = "si" ] 
+
+then
+
+echo "Optimizando conexiones de red, tráfico TCP/UDP y conexiones concurrentes..."
+
+echo 'kern.ipc.soacceptqueue=1024' >> /etc/sysctl.conf
+echo 'kern.ipc.maxsockbuf=8388608' >> /etc/sysctl.conf
+echo 'net.inet.tcp.sendspace=262144' >> /etc/sysctl.conf
+echo 'net.inet.tcp.recvspace=262144' >> /etc/sysctl.conf
+echo 'net.inet.tcp.sendbuf_max=16777216' >> /etc/sysctl.conf
+echo 'net.inet.tcp.recvbuf_max=16777216' >> /etc/sysctl.conf
+echo 'net.inet.tcp.sendbuf_inc=32768' >> /etc/sysctl.conf
+echo 'net.inet.tcp.recvbuf_inc=65536' >> /etc/sysctl.conf
+echo 'net.inet.raw.maxdgram=16384' >> /etc/sysctl.conf
+echo 'net.inet.raw.recvspace=16384' >> /etc/sysctl.conf
+echo 'net.inet.tcp.abc_l_var=44' >> /etc/sysctl.conf
+echo 'net.inet.tcp.initcwnd_segments=44' >> /etc/sysctl.conf
+echo 'net.inet.tcp.mssdflt=1448' >> /etc/sysctl.conf
+echo 'net.inet.tcp.minmss=524' >> /etc/sysctl.conf
+echo 'net.inet.tcp.cc.algorithm=htcp' >> /etc/sysctl.conf
+echo 'net.inet.tcp.cc.htcp.adaptive_backoff=1' >> /etc/sysctl.conf
+echo 'net.inet.tcp.cc.htcp.rtt_scaling=1' >> /etc/sysctl.conf
+echo 'net.inet.tcp.rfc6675_pipe=1' >> /etc/sysctl.conf
+echo 'net.inet.tcp.syncookies=0' >> /etc/sysctl.conf
+echo 'net.inet.tcp.nolocaltimewait=1' >> /etc/sysctl.conf
+echo 'net.inet.tcp.tso=0' >> /etc/sysctl.conf
+echo 'net.inet.ip.intr_queue_maxlen=2048' >> /etc/sysctl.conf
+echo 'net.route.netisr_maxqlen=2048' >> /etc/sysctl.conf
+echo 'dev.igb.0.fc=0' >> /etc/sysctl.conf
+echo 'dev.igb.1.fc=0' >> /etc/sysctl.conf
+echo 'aio_load="yes"' >> /boot/loader.conf
+echo 'cc_htcp_load="YES"' >> /boot/loader.conf
+echo 'accf_http_load="YES"' >> /boot/loader.conf
+echo 'accf_data_load="YES"' >> /boot/loader.conf
+echo 'accf_dns_load="YES"' >> /boot/loader.conf
+echo 'net.inet.tcp.hostcache.cachelimit="0"' >> /boot/loader.conf
+echo 'net.link.ifqmaxlen="2048"' >> /boot/loader.conf
+echo 'net.inet.tcp.soreceive_stream="1"' >> /boot/loader.conf
+echo 'hw.igb.rx_process_limit="-1"' >> /boot/loader.conf
+
+echo ""
+
+echo "Optimización del stack de redes completada."
+
+echo ""
+
+echo "Dependiendo del hardware, con esta configuración deberías aguantar más de 80 millones de conexiones concurrentes"
+
+sleep 3
+
+echo ""
+
+else "No se optimizará la máquina como servidor" fi
 
 echo "Limpiando Sistema"
 
