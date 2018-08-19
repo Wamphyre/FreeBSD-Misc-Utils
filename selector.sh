@@ -483,7 +483,7 @@ echo "Sistema Securizado"
 
 echo ""
 
-echo -p read "¿Será este equipo un Servidor Web o un NAS?: " servidor;
+echo ; read -p "¿Será este equipo un Servidor Web o un NAS?: " servidor;
 
 if [ "$servidor" = "si" ] 
 
