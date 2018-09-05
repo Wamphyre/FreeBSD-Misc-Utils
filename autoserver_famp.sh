@@ -290,7 +290,7 @@ echo ; read -p "¿Para qué interfaz quieres configurar las reglas?: " INTERFAZ;
 echo ""
 
 echo '# the external network interface to the internet
-ext_if="$INTERFAZ"
+ext_if="'$INTERFAZ'"
 
 # port on which sshd is running
 ssh_port = "22"
