@@ -30,11 +30,11 @@ sleep 2
 
 pkg install -y apache24
 
-pkg install -y php71 php71-session php71-pdo php71-pdo_mysql php71-zip php71-bcmath php71-posix php71-filter php71-xml mysqli mod_php71 php71-mbstring php71-gd php71-json php71-mcrypt php71-zlib php71-curl
+pkg install -y php71 php71-session php71-pdo php71-pdo_mysql php71-zip php71-bcmath php71-posix php71-filter php71-xml php71-mysqli mod_php71 php71-mbstring php71-gd php71-json php71-mcrypt php71-zlib php71-curl
 
-pkg install -y mariadb103-client mariadb103-server
+pkg install -y mariadb102-client mariadb102-server
 
-pkg install -y varnish6
+pkg install -y varnish5
 
 echo ""
 
@@ -50,6 +50,8 @@ sysrc apache24_enable="yes"
 
 service apache24 start
 
+sleep 3
+
 echo '<IfModule dir_module>
 DirectoryIndex index.php index.html
 <FilesMatch "\.php$">
@@ -60,13 +62,17 @@ SetHandler application/x-httpd-php-source
 </FilesMatch>
 </IfModule>' >> /usr/local/etc/apache24/Includes/php.conf
 
-sed '52 s/Listen 80/Listen 8080/g' /usr/local/etc/apache24/httpd.conf >> /usr/local/etc/apache24/httpd.conf
+sed '52 s/Listen 80/Listen 8080/g' /usr/local/etc/apache24/httpd.conf >> /usr/local/etc/apache24/httpd.conf;
 
 service apache24 restart
+
+sleep 3
 
 sysrc mysql_enable="YES"
 
 service mysql-server start
+
+sleep 5
 
 /usr/local/bin/mysql_secure_installation
 
@@ -81,6 +87,8 @@ sysrc varnishd_storage="malloc,512M"
 sysrc varnishd_admin=":8081"
 
 /usr/local/etc/rc.d/varnishd start
+
+sleep 3
 
 echo "Configuración base completada"
 
