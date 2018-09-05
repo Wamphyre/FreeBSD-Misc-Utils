@@ -32,9 +32,9 @@ pkg install -y apache24
 
 pkg install -y php71 php71-session php71-pdo php71-pdo_mysql php71-zip php71-bcmath php71-posix php71-filter php71-xml php71-mysqli mod_php71 php71-mbstring php71-gd php71-json php71-mcrypt php71-zlib php71-curl
 
-pkg install -y mariadb102-client mariadb102-server
+pkg install -y mariadb103-client mariadb103-server
 
-pkg install -y varnish5
+pkg install -y varnish6
 
 echo ""
 
@@ -62,13 +62,17 @@ SetHandler application/x-httpd-php-source
 </FilesMatch>
 </IfModule>' >> /usr/local/etc/apache24/Includes/php.conf
 
-sed '52 s/Listen 80/Listen 8080/g' /usr/local/etc/apache24/httpd.conf >> /usr/local/etc/apache24/httpd.conf;
+sleep 2
 
-service apache24 restart
+sed '52 s/Listen 80/Listen 8080/g' /usr/local/etc/apache24/httpd.conf >> /usr/local/etc/apache24/httpd.conf
 
 sleep 3
 
+service apache24 restart
+
 sysrc mysql_enable="YES"
+
+sysrc mysql_args="--bind-address=127.0.0.1"
 
 service mysql-server start
 
@@ -86,45 +90,45 @@ sysrc varnishd_storage="malloc,512M"
 
 sysrc varnishd_admin=":8081"
 
-/usr/local/etc/rc.d/varnishd start
-
 sleep 3
 
 echo "Configuración base completada"
 
 echo ""
 
-echo ; read -p "¿Quieres instalar phpmyadmin?: (si/no) " ADMIN;
+echo ; read -p "¿Quieres instalar phpmyadmin?: (si/no) " PHPMYADMIN;
 
-if [ "$ADMIN" = "si" ] then 
+if [ "$PHPMYADMIN" = "si" ] 
 
-cd /usr/local/www/apache24/data/
+then cd /usr/local/www/apache24/data/;
 
-fetch https://files.phpmyadmin.net/phpMyAdmin/4.8.3/phpMyAdmin-4.8.3-all-languages.zip
+fetch https://files.phpmyadmin.net/phpMyAdmin/4.8.3/phpMyAdmin-4.8.3-all-languages.zip;
 
-unzip phpMyAdmin-4.8.3-all-languages.zip && rm -rf *.zip
+unzip phpMyAdmin-4.8.3-all-languages.zip && rm -rf *.zip;
 
-mv phpMyAdmin-4.8.3-all-languages phpmyadmin
+mv phpMyAdmin-4.8.3-all-languages phpmyadmin;
 
-echo ""
+cd;
 
-else echo "No se instalará phpmyadmin" fi ;
+else echo "No se instalará phpmyadmin" 
 
-echo ""
+fi
 
 echo ; read -p "¿Quieres instalar el panel de control FROXLOR?: (si/no) " FROXLOR;
 
-if [ "$FROXLOR" = "si" ] then
+if [ "$FROXLOR" = "si" ]
 
-fetch https://files.froxlor.org/releases/froxlor-latest.tar.gz
+then cd /usr/local/www/apache24/data/;
 
-tar -xvf froxlor-latest.tar.gz && rm -rf *.tar.gz
+fetch https://files.froxlor.org/releases/froxlor-latest.tar.gz;
 
-echo ""
+tar -xvf froxlor-latest.tar.gz && rm -rf *.tar.gz;
 
-else echo "No se instalará Froxlor" fi ;
+cd;
 
-echo ""
+else echo "No se instalará Froxlor" 
+
+fi
 
 echo "Aplicando hardening y tuning de rendimiento"
 
