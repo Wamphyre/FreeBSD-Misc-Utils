@@ -64,7 +64,11 @@ SetHandler application/x-httpd-php-source
 
 sleep 2
 
-sed '52 s/Listen 80/Listen 8080/g' /usr/local/etc/apache24/httpd.conf
+cp /usr/local/etc/apache24/httpd.conf /usr/local/etc/apache24/httpd.conf_bk;
+
+rm -rf /usr/local/etc/apache24/httpd.conf
+
+sed '52 s/Listen 80/Listen 8080/g' /usr/local/etc/apache24/httpd.conf_bk >> /usr/local/etc/apache24/httpd.conf
 
 sleep 3
 
