@@ -30,6 +30,8 @@ sleep 2
 
 pkg install -y apache24
 
+pkg install -y nano htop git
+
 pkg install -y php71 php71-hash php71-session php71-simplexml php71-pdo php71-pdo_mysql php71-zip php71-bcmath php71-posix php71-filter php71-xml php71-mysqli mod_php71 php71-mbstring php71-gd php71-json php71-mcrypt php71-zlib php71-curl
 
 pkg install -y mariadb102-client mariadb102-server
@@ -312,7 +314,7 @@ ext_if="'$INTERFAZ'"
 ssh_port = "22"
 
 # allowed inbound ports (services hosted by this machine)
-inbound_tcp_services = "{80, 8080, 25, " $ssh_port " }"
+inbound_tcp_services = "{80, 8080, " $ssh_port " }"
 #inbound_udp_services = "{dhcpv6-client,openvpn}"
 
 # politely send TCP RST for blocked packets. The alternative is
