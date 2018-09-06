@@ -339,6 +339,8 @@ echo "Configurando PHP ini..."
 
 mv /usr/local/etc/php.ini-production /usr/local/etc/php.ini-production_bk
 
+touch /usr/local/etc/php.ini
+
 echo "[PHP]
 
 engine = On
