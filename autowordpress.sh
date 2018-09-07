@@ -5,7 +5,7 @@ echo "Version 1.0"
 test $? -eq 0 || exit 1 "Necesitas ser root para ejecutar este script"
 
 echo "Descargando Wordpress...";
-wget http://wordpress.org/latest.zip;
+fetch http://wordpress.org/latest.zip;
 unzip -q latest.zip;
 
 echo "Limpiando directorio y archivos temporales...";
@@ -32,12 +32,5 @@ chown -R www:www /usr/local/www/public_html/
 chown -R www:www /usr/local/www/public_html/*
 find . -type f -exec chmod 664 {} +
 find . -type d -exec chmod 775 {} +
-
-mv wp-config-sample.php wp-config.php
-
-echo "Desactivando editor de archivos...";
-echo 'define(‘DISALLOW_FILE_EDIT’, true);' >> wp-config.php
-
-echo 'define(‘FS_METHOD’,’direct’);' >> wp-config.php
 
 echo "Finalizado!";
