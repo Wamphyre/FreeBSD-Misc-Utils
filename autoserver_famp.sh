@@ -102,7 +102,7 @@ sysrc varnishd_enable=YES
 
 sysrc varnishd_listen=":80"
 
-sysrc varnishd_backend="localhost:8080"
+sysrc varnishd_backend=":8080"
 
 sysrc varnishd_storage="malloc,512M"
 
@@ -209,7 +209,7 @@ sysrc powerd_enable="YES"
 sysrc powerd_flags="-a hiadaptive"
 sysrc clear_tmp_enable="YES"
 sysrc syslogd_flags="-ss"
-sysrc sendmail_enable="NONE"
+sysrc sendmail_enable="YES"
 sysrc dumpdev="NO"
 
 echo 'kern.elf64.nxstack=1' >> /etc/sysctl.conf
@@ -314,7 +314,7 @@ ext_if="'$INTERFAZ'"
 ssh_port = "22"
 
 # allowed inbound ports (services hosted by this machine)
-inbound_tcp_services = "{80, 8080, " $ssh_port " }"
+inbound_tcp_services = "{80, 8080, 21, 25, " $ssh_port " }"
 #inbound_udp_services = "{dhcpv6-client,openvpn}"
 
 # politely send TCP RST for blocked packets. The alternative is
