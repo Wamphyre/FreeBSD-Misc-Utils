@@ -22,11 +22,13 @@ echo "Paquetes actualizados"
 
 echo ""
 
-echo "Instalando APACHE, MARIADB, PHP71, VARNISH"
+echo "Instalando NGINX, APACHE, MARIADB, PHP71, VARNISH"
 
 echo ""
 
 sleep 2
+
+pkg install -y nginx
 
 pkg install -y apache24
 
@@ -47,6 +49,75 @@ echo ""
 echo "Configurando Stack..."
 
 echo ""
+
+cd /usr/local/etc/nginx/
+
+mv nginx.conf nginx.conf.original
+
+fetch https://raw.githubusercontent.com/Wamphyre/AutoTools/master/nginx.conf
+
+fetch https://raw.githubusercontent.com/Wamphyre/AutoTools/master/proxy.conf
+
+mkdir vhost
+
+cd vhost/
+
+touch vhost_test.conf
+
+IP=$(curl ifconfig.me)
+HOST=$(hostname)
+
+echo "server {
+# Replace with your freebsd IP
+listen '$IP':80;
+
+# Document Root
+root /usr/local/www/public_html;
+index index.php index.html index.htm;
+
+# Domain
+server_name www.'$HOST' '$HOST';
+
+# Error and Access log file
+error_log  /var/log/nginx/'$HOST'-error.log;
+access_log /var/log/nginx/'$HOST'-access.log main;
+
+# Reverse Proxy Configuration
+location ~ \.php$ {
+proxy_pass http://127.0.0.1:82;
+include /usr/local/etc/nginx/proxy.conf;
+
+# Cache configuration
+proxy_cache my-cache;
+proxy_cache_valid 10s;
+proxy_no_cache $cookie_PHPSESSID;
+proxy_cache_bypass $cookie_PHPSESSID;
+proxy_cache_key "$scheme$host$request_uri";
+
+}
+
+# Disable Cache for the file type html, json
+location ~* .(?:manifest|appcache|html?|xml|json)$ {
+expires -1;
+}
+
+# Enable Cache the file 30 days
+location ~* .(jpg|png|gif|jpeg|css|mp3|wav|swf|mov|doc|pdf|xls|ppt|docx|pptx|xlsx)$ {
+proxy_cache_valid 200 120m;
+expires 30d;
+proxy_cache my-cache;
+access_log off;
+}
+
+}" >> vhost_test.conf
+
+mkdir -p /var/nginx/cache
+
+mkdir -p /var/log/nginx/
+
+sysrc nginx_enable="yes"
+
+service nginx start
 
 sysrc apache24_enable="yes"
 
@@ -84,6 +155,12 @@ cd /usr/local/etc/ && fetch https://raw.githubusercontent.com/Wamphyre/AutoTools
 
 mkdir /usr/local/www/public_html
 
+cd /usr/local/www/public_html
+
+touch index.html
+
+echo "FREEBSD WEB SERVER TESTING!! OK!" >> index.html
+
 service apache24 restart
 
 echo ""
@@ -100,7 +177,7 @@ sleep 10
 
 sysrc varnishd_enable=YES
 
-sysrc varnishd_listen=":80"
+sysrc varnishd_listen=":82"
 
 sysrc varnishd_backend=":8080"
 
@@ -314,7 +391,7 @@ ext_if="'$INTERFAZ'"
 ssh_port = "22"
 
 # allowed inbound ports (services hosted by this machine)
-inbound_tcp_services = "{80, 8080, 21, 25, " $ssh_port " }"
+inbound_tcp_services = "{80, 21, 25, " $ssh_port " }"
 #inbound_udp_services = "{dhcpv6-client,openvpn}"
 
 # politely send TCP RST for blocked packets. The alternative is
