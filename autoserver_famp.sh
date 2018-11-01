@@ -92,7 +92,7 @@ proxy_cache my-cache;
 proxy_cache_valid 10s;
 proxy_no_cache \$cookie_PHPSESSID;
 proxy_cache_bypass \$cookie_PHPSESSID;
-proxy_cache_key "\$scheme$host$request_uri";
+proxy_cache_key "\$scheme\$host\$request_uri";
 
 }
 
