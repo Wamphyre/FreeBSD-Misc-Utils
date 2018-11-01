@@ -22,7 +22,7 @@ echo "Paquetes actualizados"
 
 echo ""
 
-echo "Instalando NGINX, APACHE, MARIADB, PHP71, VARNISH"
+echo "Instalando NGINX, APACHE, CERTBOT, MARIADB, PHP71, VARNISH"
 
 echo ""
 
@@ -31,6 +31,8 @@ sleep 2
 pkg install -y nginx
 
 pkg install -y apache24
+
+pkg install -y py36-certbot-nginx
 
 pkg install -y nano htop git
 
