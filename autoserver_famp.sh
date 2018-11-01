@@ -69,18 +69,18 @@ HOST=$(hostname)
 
 echo "server {
 # Replace with your freebsd IP
-listen '$IP':80;
+listen $IP:80;
 
 # Document Root
 root /usr/local/www/public_html;
 index index.php index.html index.htm;
 
 # Domain
-server_name www.'$HOST' '$HOST';
+server_name www.$HOST $HOST;
 
 # Error and Access log file
-error_log  /var/log/nginx/'$HOST'-error.log;
-access_log /var/log/nginx/'$HOST'-access.log main;
+error_log  /var/log/nginx/$HOST-error.log;
+access_log /var/log/nginx/$HOST-access.log main;
 
 # Reverse Proxy Configuration
 location ~ \.php$ {
@@ -90,9 +90,9 @@ include /usr/local/etc/nginx/proxy.conf;
 # Cache configuration
 proxy_cache my-cache;
 proxy_cache_valid 10s;
-proxy_no_cache $cookie_PHPSESSID;
-proxy_cache_bypass $cookie_PHPSESSID;
-proxy_cache_key "$scheme$host$request_uri";
+proxy_no_cache \$cookie_PHPSESSID;
+proxy_cache_bypass \$cookie_PHPSESSID;
+proxy_cache_key "\$scheme$host$request_uri";
 
 }
 
