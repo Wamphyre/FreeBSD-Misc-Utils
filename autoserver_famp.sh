@@ -34,6 +34,8 @@ pkg install -y apache24
 
 pkg install -y py36-certbot-nginx
 
+pkg install -y py36-salt
+
 pkg install -y nano htop git
 
 pkg install -y php71 php71-hash php71-session php71-simplexml php71-pdo php71-pdo_mysql php71-zip php71-bcmath php71-posix php71-filter php71-xml php71-mysqli mod_php71 php71-mbstring php71-gd php71-json php71-mcrypt php71-zlib php71-curl
