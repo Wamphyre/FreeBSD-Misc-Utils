@@ -395,8 +395,8 @@ ext_if="'$INTERFAZ'"
 ssh_port = "22"
 
 # allowed inbound ports (services hosted by this machine)
-inbound_tcp_services = "{80, 21, 25, " $ssh_port " }"
-#inbound_udp_services = "{dhcpv6-client,openvpn}"
+inbound_tcp_services = "{80, 443, 21, 25," $ssh_port " }"
+#inbound_udp_services = "{80, 443,}"
 
 # politely send TCP RST for blocked packets. The alternative is
 # "set block-policy drop", which will cause clients to wait for a timeout
