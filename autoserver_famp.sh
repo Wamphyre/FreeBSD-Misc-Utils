@@ -129,18 +129,6 @@ service apache24 start
 
 sleep 3
 
-echo '<IfModule dir_module>
-DirectoryIndex index.php index.html
-<FilesMatch "\.php$">
-SetHandler application/x-httpd-php
-</FilesMatch>
-<FilesMatch "\.phps$">
-SetHandler application/x-httpd-php-source
-</FilesMatch>
-</IfModule>' >> /usr/local/etc/apache24/Includes/php.conf
-
-sleep 2
-
 cp /usr/local/etc/apache24/httpd.conf /usr/local/etc/apache24/httpd.conf_bk;
 
 service apache24 stop
@@ -396,7 +384,7 @@ ssh_port = "22"
 
 # allowed inbound ports (services hosted by this machine)
 inbound_tcp_services = "{80, 443, 21, 25," $ssh_port " }"
-#inbound_udp_services = "{80, 443,}"
+inbound_udp_services = "{80, 443,}"
 
 # politely send TCP RST for blocked packets. The alternative is
 # "set block-policy drop", which will cause clients to wait for a timeout
