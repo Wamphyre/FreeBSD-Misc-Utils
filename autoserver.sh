@@ -100,7 +100,7 @@ touch /usr/local/etc/nginx/conf.d/default_vhost.conf && cd /usr/local/etc/nginx/
 
 DOMINIO=$(hostname)
 
-echo " {
+echo " upstream php {
     server  unix:/var/run/php-wordpress.sock;
 }
 
@@ -125,9 +125,6 @@ server {
     # listening socket that will bind to port 443 on all available IPv6 addresses
     listen                     [::]:443 ssl;
 
-    # our SSL/TLS settings
-    include                    ssl.conf;
-
     # brotli and gzip compression configuration
     include                    compression.conf;
 
@@ -139,7 +136,7 @@ server {
 
     # handle weird requests in a rude manner
     if (\$host != \$server_name) {
-         return                418 "Im a teapot";
+         return                418;
     }
 
     # DNS resolver - you may want to change it to some other provider,
@@ -195,7 +192,7 @@ server {
             include                     fastcgi.conf;
         }
     }
-}" >> default_vhost.conf
+" >> default_vhost.conf
 
 service nginx start
 
@@ -448,7 +445,7 @@ echo ""
 
 pkg clean -y && pkg autoremove -y
 
-pkg delete -f autoconf\* automake\* apache24\*
+pkg delete -f -y autoconf\* automake\* apache24\*
 
 echo ""
 
