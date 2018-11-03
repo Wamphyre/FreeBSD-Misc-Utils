@@ -88,7 +88,7 @@ access_log /var/log/nginx/$HOST-access.log main;
 
 # Reverse Proxy Configuration
 location ~ \.php$ {
-proxy_pass http://127.0.0.1:82;
+proxy_pass http://127.0.0.1:81;
 include /usr/local/etc/nginx/proxy.conf;
 
 # Cache configuration
@@ -169,9 +169,9 @@ sleep 10
 
 sysrc varnishd_enable=YES
 
-sysrc varnishd_listen=":82"
+sysrc varnishd_listen=":81"
 
-sysrc varnishd_backend=":8080"
+sysrc varnishd_backend=":82"
 
 sysrc varnishd_storage="malloc,512M"
 
