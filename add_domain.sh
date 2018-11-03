@@ -35,7 +35,7 @@ error_log  /var/log/nginx/$DOMINIO-error.log;
 access_log /var/log/nginx/$DOMINIO-access.log main;
 # Reverse Proxy Configuration
 location ~ \.php$ {
-proxy_pass http://127.0.0.1:82;
+proxy_pass http://127.0.0.1:81;
 include /usr/local/etc/nginx/proxy.conf;
 # Cache configuration
 proxy_cache my-cache;
