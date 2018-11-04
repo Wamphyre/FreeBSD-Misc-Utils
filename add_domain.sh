@@ -10,7 +10,7 @@ sleep 1
 
 echo ; read -p "Dime dominio a añadir: " DOMINIO
 
-cd /usr/local/etc/nginx/vhost && touch $DOMINIO.conf
+cd /usr/local/etc/nginx/conf.d && touch $DOMINIO.conf
 
 mkdir /usr/local/www/public_html/$DOMINIO
 
@@ -18,44 +18,84 @@ chown -R www:www /usr/local/www/public_html/$DOMINIO
 
 echo ""
 
-IP=$(curl ifconfig.me)
-
-echo ""
-
-echo "server {
-# Replace with your freebsd IP
-listen $IP:80;
-# Document Root
-root /usr/local/www/public_html/$DOMINIO;
-index index.php index.html index.htm;
-# Domain
-server_name www.$DOMINIO $DOMINIO;
-# Error and Access log file
-error_log  /var/log/nginx/$DOMINIO-error.log;
-access_log /var/log/nginx/$DOMINIO-access.log main;
-# Reverse Proxy Configuration
-location ~ \.php$ {
-proxy_pass http://127.0.0.1:81;
-include /usr/local/etc/nginx/proxy.conf;
-# Cache configuration
-proxy_cache my-cache;
-proxy_cache_valid 10s;
-proxy_no_cache \$cookie_PHPSESSID;
-proxy_cache_bypass \$cookie_PHPSESSID;
-proxy_cache_key "\$scheme\$host\$request_uri";
+echo "upstream php {
+    server  unix:/var/run/php-wordpress.sock;
 }
-# Disable Cache for the file type html, json
-location ~* .(?:manifest|appcache|html?|xml|json)$ {
-expires -1;
+# HTTP (port 80) default server used only to redirect all requests to HTTPS version
+server {
+    # listening socket that will bind to port 80 on all available IPv4 addresses
+    listen                     80 default_server;
+    # listening socket that will bind to port 80 on all available IPv6 addresses
+    listen                     [::]:80 default_server;
+    # HTTP redirection to HTTPS
+    return                     301 https://\$host\$request_uri;
 }
-# Enable Cache the file 30 days
-location ~* .(jpg|png|gif|jpeg|css|mp3|wav|swf|mov|doc|pdf|xls|ppt|docx|pptx|xlsx)$ {
-proxy_cache_valid 200 120m;
-expires 30d;
-proxy_cache my-cache;
-access_log off;
-}
-}" >> $DOMINIO.conf
+# HTTPS (port 443) server - our website
+server {
+    # listening socket that will bind to port 443 on all available IPv4 addresses
+    listen                     443 ssl;
+    # listening socket that will bind to port 443 on all available IPv6 addresses
+    listen                     [::]:443 ssl;
+    # brotli and gzip compression configuration
+    include                    compression.conf;
+    root                       /usr/local/www/public_html;
+    index                      index.php;
+    # change this to your domain name (domain.com) or host name (blog.domain.com)
+    server_name                $DOMINIO;   
+    # handle weird requests in a rude manner
+    if (\$host != \$server_name) {
+         return                418;
+    }
+    # DNS resolver - you may want to change it to some other provider,
+    # e.g. OpenDNS: 208.67.222.222
+    # or Google: 8.8.8.8
+    # (9.9.9.9 is https://quad9.net )
+    resolver                   1.1.1.1;
+    # allow POSTs to static pages
+    error_page                 405    =200 \$uri;
+    access_log                 /var/log/nginx/$DOMINIO-access.log;
+    error_log                  /var/log/nginx/$DOMINIO-error.log;
+    location / {
+        ModSecurityEnabled     on;
+        ModSecurityConfig      modsecurity.conf;
+        # permalinks
+        try_files              \$uri \$uri/ /index.php?\$args;
+        location /wp-admin {
+            ModSecurityEnabled          off;
+            # admin-ajax.php and load-styles.php under wp-admin are allowed
+            location ~ /wp-admin/(admin-ajax|load-styles)\.php {
+                fastcgi_pass            php;
+                include                 fastcgi.conf;
+            }
+        }
+        
+        }
+        # deny access to xmlrpc.php which allows brute-forcing at a higher rates
+        # than wp-login.php; this may break some functionality, like WordPress
+        # iOS/Android app posting 
+        location ~* /xmlrpc\.php {
+            deny                        all;
+        }
+        # cache binary and SVG files for one month, don't log these requests
+        location ~* \.(eot|gif|ico|jpg|png|jpeg|otf|pdf|swf|ttf|woff|woff2|mp4|svg)$ {
+            expires                     1M;
+            add_header                  Cache-Control public;
+            access_log                  off;
+        }
+        # don't log requests to robots.txt and ads.txt
+        location ~ /(robots|ads)\.txt {
+            allow                       all;
+            log_not_found               off;
+            access_log                  off;
+        }
+        # handle PHP scripts
+        location ~ .php$ {
+	    fastcgi_pass                php;
+            fastcgi_index               index.php;
+            include                     fastcgi.conf;
+        }
+    }
+" >> $DOMINIO.conf
 
 echo "VHOST para $DOMINIO creado correctamente"
 
