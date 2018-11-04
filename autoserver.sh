@@ -216,7 +216,7 @@ chown -R www:www /usr/local/www/public_html/
 
 touch index.html
 
-echo "FREEBSD WEB SERVER TESTING!! OK!" >> index.html
+echo "FREEBSD WEB SERVER TESTING!! OK!" >> index.php
 
 echo ""
 
@@ -236,11 +236,13 @@ if [ "$PHPMYADMIN" = "si" ]
 
 then cd /usr/local/www/public_html/;
 
-fetch https://files.phpmyadmin.net/phpMyAdmin/4.8.3/phpMyAdmin-4.8.3-all-languages.zip;
+pkg install -y phpMyAdmin-php72
 
-unzip phpMyAdmin-4.8.3-all-languages.zip && rm -rf *.zip;
+ln -s /usr/local/www/phpMyAdmin/ /usr/local/www/public_html/phpmyadmin
 
-mv phpMyAdmin-4.8.3-all-languages phpmyadmin;
+service nginx restart
+
+service php-fpm restart
 
 cd;
 
