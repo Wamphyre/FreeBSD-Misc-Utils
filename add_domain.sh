@@ -33,7 +33,7 @@ server {
 # HTTPS (port 443) server - our website
 server {
     # listening socket that will bind to port 443 on all available IPv4 addresses
-    listen                     443 ssl;
+    listen                     443 ssl http2;
     # listening socket that will bind to port 443 on all available IPv6 addresses
     listen                     [::]:443 ssl;
     # brotli and gzip compression configuration
