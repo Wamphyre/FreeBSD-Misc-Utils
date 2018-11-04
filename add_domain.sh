@@ -16,6 +16,8 @@ mkdir /usr/local/www/public_html/$DOMINIO
 
 chown -R www:www /usr/local/www/public_html/$DOMINIO
 
+ln -s /usr/local/www/phpMyAdmin/ /usr/local/www/public_html/$DOMINIO/phpmyadmin
+
 echo ""
 
 echo "upstream php {
@@ -106,6 +108,8 @@ echo "Reiniciando NGINX"
 sleep 2
 
 service nginx restart
+
+service php-fpm restart
 
 echo ""
 
