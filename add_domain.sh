@@ -38,7 +38,7 @@ server {
     listen                     [::]:443 ssl;
     # brotli and gzip compression configuration
     include                    compression.conf;
-    root                       /usr/local/www/public_html;
+    root                       /usr/local/www/public_html/$DOMINIO;
     index                      index.php;
     # change this to your domain name (domain.com) or host name (blog.domain.com)
     server_name                $DOMINIO;   
