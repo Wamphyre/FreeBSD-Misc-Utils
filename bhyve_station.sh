@@ -1,5 +1,7 @@
 #!/bin/bash
 
+clear
+
 echo "BHYVE S t a t i o n 0.1"
 echo "======================="
 echo ""
@@ -25,8 +27,6 @@ echo ""
 
 kldload if_bridge if_tap nmdm vmm
 
-echo ""
-
 echo "Setting configuration for BHYVE-VM"
 
 sleep 2
@@ -44,7 +44,6 @@ echo "MACHINE TYPES"
 echo ""
 
 echo "--- FreeBSD"
-echo "--- GNU/Linux"
 echo "--- Windows"
 
 echo ""
@@ -89,31 +88,13 @@ if [ "$VM" = "FreeBSD" ]; then
 
 echo ""
 
-sh /usr/share/examples/bhyve/vmrun.sh -c $CORES -m "$RAM"M -t tap0 -d $NAME.img -i -I "$DIR"/"$ISO" $NAME
+echo "Use this to run the machine: \sh /usr/share/examples/bhyve/vmrun.sh -c $CORES -m "$RAM"M -t tap0 -d $NAME.img -i -I "$DIR"/"$ISO" $NAME
 
 echo ""
 
-echo "Use this to launch the BHYVE Machine: sh /usr/share/examples/bhyve/vmrun.sh -c $CORES -m '$RAM'M -t tap0 -d $NAME"
+else fi
 
-echo ""
 
-elif [ "$VM" = "GNU/Linux" ] then;
-
-echo ""
-
-touch device.map
-
-echo "(hd0) ./$NAME.img
-(cd0) ./$ISO" >> device.map
-
-grub-bhyve -m device.map -r cd0 -M "$RAM"M $NAME
-
-echo ""
-
-echo "Use this to launch the BHYVE Machine: bhyve -A -H -P -s 0:0,hostbridge -s 1:0,lpc -s 2:0,virtio-net,tap0 \
-    -s 3:0,virtio-blk,./linux.img -l com1,stdio -c $CORES -m '$RAM'M $NAME"
-
-else ; fi
 
 
 
