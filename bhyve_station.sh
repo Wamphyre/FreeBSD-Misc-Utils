@@ -88,16 +88,8 @@ if [ "$VM" = "FreeBSD" ]; then
 
 echo ""
 
-echo "Use this to run the machine: \sh /usr/share/examples/bhyve/vmrun.sh -c $CORES -m "$RAM"M -t tap0 -d $NAME.img -i -I "$DIR"/"$ISO" $NAME
+echo "Use this to run the machine: \sh /usr/share/examples/bhyve/vmrun.sh -c $CORES -m "$RAM"M -t tap0 -d $NAME.img -i -I "$DIR"/"$ISO" $NAME"
 
 echo ""
 
 else fi
-
-
-
-
-
-
-
-
