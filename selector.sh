@@ -79,7 +79,7 @@ if [ "$de" = "xfce" ]
 
 then
 
-pkg install -y xorg slim xfce git nano htop xarchiver zip rar xfce4-volumed-pulse xfce4-pulseaudio-plugin thunar-archive-plugin xfce-evolution mate-icon-theme-faenza slim-freebsd-black-theme vlc transmission filezilla bluefish gimp
+pkg install -y xorg slim xfce git nano htop xarchiver zip rar xfce4-volumed-pulse xfce4-pulseaudio-plugin thunar-archive-plugin xfce-evolution mate-icon-theme-faenza slim-freebsd-black-theme vlc transmission filezilla bluefish gimp gnome-keyring shotwell gnome-screenshot gnome-font-viewer
 
 sysrc moused_enable="YES"
 
