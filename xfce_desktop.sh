@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Selector by Wamphyre
+#xfce_desktop by Wamphyre
 #Version 1.0
 
 test $? -eq 0 || exit 1 "Necesitas ser root para ejecutar este script"
@@ -9,7 +9,7 @@ echo "Bienvenido al Script Selector"
 
 echo ""; sleep 3
 
-echo "A lo largo de este script podrás seleccionar una serie de paquetes para instalar en tu sistema FreeBSD"
+echo "Este script instala un entorno de escritorio XFCE completo, optimizado y seguro"
 
 echo ""; sleep 3
 
@@ -57,27 +57,11 @@ echo ""
 
 sleep 3
 
-echo "Mostrando entornos de escritorio recomendados"
+echo "Instalando XFCE..."
 
 echo ""
 
 sleep 1
-
-echo "XFCE"
-
-echo ""
-
-sleep 1
-
-echo "MATE"
-
-echo ""
-
-echo ; read -p "¿Qué entorno quieres instalar?: " de ;
-
-if [ "$de" = "xfce" ]
-
-then
 
 pkg install -y xorg slim xfce git nano htop xarchiver zip rar xfce4-mixer thunar-archive-plugin xfce-evolution mate-icon-theme-faenza slim-freebsd-black-theme vlc transmission-qt5 filezilla bluefish gimp gnome-keyring shotwell gnome-screenshot gnome-font-viewer
 
@@ -140,82 +124,6 @@ echo ""
 echo "$user habilitado"
 
 else fi
-
-echo ""
-
-elif [ "$de" = "mate" ]
-
-then
-
-pkg install -y xorg slim mate-desktop mate nano htop xarchiver zip mate-icon-theme-faenza slim-themes deadbeef vlc transmission filezilla bluefish gimp
-
-sysrc moused_enable="YES"
-
-sysrc dbus_enable="YES"
-
-sysrc hald_enable="YES"
-
-sysrc slim_enable="YES"
-
-echo ""
-
-echo ; read -p "¿Estás usando un Macbook?: " Y;
-
-echo ""
-
-if [ "$Y" = "si" ]
-
-then
-
-sysrc moused_enable="NO"
-
-echo 'wsp_load="YES"' >> /boot/loader.conf
-
-echo ""
-
-echo "Driver para el touchpad de Mac cargado"
-
-sleep 1
-
-echo ""
-
-else fi
-
-cd
-
-touch .xinitrc
-
-echo 'exec mate-session' >> .xinitrc
-
-echo ""
-
-echo ; read -p "¿Quieres habilitar MATE para otro usuario?: " X;
-
-echo ""
-
-if [ "$X" = "si" ]
-
-then
-
-echo ; read -p "Dime usuario: " user;
-
-touch /usr/home/$user/.xinitrc
-
-echo 'exec mate-session' >> /usr/home/$user/.xinitrc
-
-echo ""
-
-echo "$user habilitado"
-
-else fi
-
-echo ""
-
-else
-
-echo "No se instalará ningún entorno de escritorio"
-
-fi
 
 echo ""
 
@@ -354,9 +262,13 @@ echo ""
 sleep 2
 
 mv /etc/sysctl.conf /etc/sysctl.conf.bk
+touch /etc/sysctl.conf
 echo 'vfs.usermount=1' >> /etc/sysctl.conf
 echo 'vfs.vmiodirenable=0' >> /etc/sysctl.conf
 echo 'vfs.read_max=4' >> /etc/sysctl.conf
+echo 'kern.timecounter.alloweddeviation=0' >> /etc/sysctl.conf
+echo 'hw.usb.uaudio.buffer_ms=2' >> /etc/sysctl.conf
+echo 'hw.snd.latency=0' >> /etc/sysctl.conf
 echo 'kern.ipc.shmmax=67108864' >> /etc/sysctl.conf
 echo 'kern.ipc.shmall=32768' >> /etc/sysctl.conf
 echo 'kern.ipc.somaxconn=256' >> /etc/sysctl.conf
@@ -377,7 +289,6 @@ echo 'mixer_enable="YES"' >> /boot/loader.conf
 echo 'hint.pcm.0.buffersize=65536' >> /boot/loader.conf
 echo 'hint.pcm.1.buffersize=65536' >> /boot/loader.conf
 echo 'hw.snd.feeder_buffersize=65536' >> /boot/loader.conf
-echo 'hw.snd.latency=0' >> /boot/loader.conf
 echo 'hint.pcm.0.eq="1"' >> /boot/loader.conf
 echo 'hint.pcm.1.eq="1"' >> /boot/loader.conf
 echo 'hint.pcm.2.eq="1"' >> /boot/loader.conf
@@ -444,8 +355,6 @@ echo "Aplicando Hardening"
 sleep 2
 
 echo ""
-
-touch /etc/sysctl.conf
 
 echo 'kern.elf64.nxstack=1' >> /etc/sysctl.conf
 echo 'security.bsd.map_at_zero=0' >> /etc/sysctl.conf
@@ -516,7 +425,7 @@ echo 'net.inet.ip.intr_queue_maxlen=2048' >> /etc/sysctl.conf
 echo 'net.route.netisr_maxqlen=2048' >> /etc/sysctl.conf
 echo 'dev.igb.0.fc=0' >> /etc/sysctl.conf
 echo 'dev.igb.1.fc=0' >> /etc/sysctl.conf
-echo 'aio_load="yes"' >> /boot/loader.conf
+echo 'aio_load="YES"' >> /boot/loader.conf
 echo 'cc_htcp_load="YES"' >> /boot/loader.conf
 echo 'accf_http_load="YES"' >> /boot/loader.conf
 echo 'accf_data_load="YES"' >> /boot/loader.conf
@@ -532,7 +441,7 @@ echo "Optimización del stack de redes completada."
 
 echo ""
 
-echo "Dependiendo del hardware, con esta configuración deberías aguantar más de 80 millones de conexiones concurrentes"
+echo "Dependiendo del hardware, con esta configuración deberías aguantar más de 80 mil de conexiones concurrentes"
 
 sleep 3
 
@@ -558,7 +467,7 @@ echo "Por favor, reinicia ahora tu sistema"
 
 echo ""
 
-echo "Selector by Wamphyre :)"
+echo "xfce_desktop by Wamphyre :)"
 
 echo ""
 
