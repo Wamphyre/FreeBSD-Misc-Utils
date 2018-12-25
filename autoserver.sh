@@ -2,7 +2,7 @@
 
 clear
 
-echo "=====AUTOSERVER FAMP====="
+echo "=====AUTOSERVER====="
 
 echo "----------------------by Wamphyre"
 
@@ -22,7 +22,7 @@ echo "Paquetes actualizados"
 
 echo ""
 
-echo "INSTALANDO NGINX + BROTLI + PHP-FPM + MODSECURITY + PHP72 + MARIADB"
+echo "INSTALANDO VARNISH + NGINX + CERTBOT + PHP72 + MARIADB"
 
 pkg install -y php72 php72-mysqli php72-session php72-xml php72-hash php72-ftp php72-curl php72-tokenizer php72-zlib php72-zip php72-filter php72-gd php72-openssl
 
@@ -32,92 +32,37 @@ pkg install -y py36-certbot-nginx
 
 pkg install -y py36-salt
 
-pkg install -y nano htop git libtool automake autoconf curl libnghttp2 apache24 geoip
+pkg install -y nano htop git libtool automake autoconf curl geoip
+
+pkg install -y nginx
+
+pkg install -y varnish5
 
 echo "Configurando Stack..."
 
-mkdir /root/build && cd /root/build
-
-fetch https://nginx.org/download/nginx-1.14.0.tar.gz 
-
-git clone https://github.com/SpiderLabs/ModSecurity
-
-git clone https://github.com/SpiderLabs/owasp-modsecurity-crs
-
-git clone https://github.com/google/ngx_brotli
-
-cd ngx_brotli && git submodule update --init && cd ..
-
-tar -zxf nginx-1.14.0.tar.gz && rm -f nginx*tar.gz
-
-/usr/local/bin/geoipupdate.sh
-
-cd ModSecurity
-
-sh autogen.sh
-
-./configure --enable-standalone-module
-
-make
-
-cd ../nginx-*/
-
-./configure --add-module=../ngx_brotli/ --add-module=../ModSecurity/nginx/modsecurity/ --prefix=/usr/local/etc/nginx --with-cc-opt='-I /usr/local/include' --with-ld-opt='-L /usr/local/lib' --conf-path=/usr/local/etc/nginx/nginx.conf --sbin-path=/usr/local/sbin/nginx --pid-path=/var/run/nginx.pid --error-log-path=/var/log/nginx/error.log --user=www --group=www --modules-path=/usr/local/libexec/nginx --with-file-aio --http-client-body-temp-path=/var/tmp/nginx/client_body_temp --http-fastcgi-temp-path=/var/tmp/nginx/fastcgi_temp --http-proxy-temp-path=/var/tmp/nginx/proxy_temp --http-scgi-temp-path=/var/tmp/nginx/scgi_temp --http-uwsgi-temp-path=/var/tmp/nginx/uwsgi_temp --http-log-path=/var/log/nginx/access.log --with-http_addition_module --with-http_auth_request_module --with-http_dav_module --with-http_flv_module --with-http_gzip_static_module --with-http_gunzip_module --with-http_mp4_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_stub_status_module --with-http_sub_module --with-pcre --with-http_v2_module --with-stream=dynamic --with-stream_ssl_module --with-stream_ssl_preread_module --with-threads --with-mail=dynamic --without-mail_imap_module --without-mail_pop3_module --without-mail_smtp_module --with-mail_ssl_module --with-http_ssl_module --with-http_geoip_module=dynamic
-
-make && make install
-
-cd ..
-
-mkdir -p /usr/local/etc/rc.d
-
-fetch -o /usr/local/etc/rc.d/nginx https://malcont.net/wp-content/uploads/2018/01/nginx_freebsd_rcd_script
-
-chmod 555 /usr/local/etc/rc.d
-
-chmod 555 /usr/local/etc/rc.d/nginx
-
 sysrc nginx_enable="YES"
 
-cp owasp-modsecurity-crs/rules/*data /usr/local/etc/nginx/
+sysrc varnishd_enable=YES
 
-cp ModSecurity/unicode.mapping /usr/local/etc/nginx/
+sysrc varnishd_listen=":80"
 
-cat owasp-modsecurity-crs/crs-setup.conf.example owasp-modsecurity-crs/rules/*conf > /usr/local/etc/nginx/modsecurity.conf
+sysrc varnishd_backend="localhost:443"
 
-mkdir -p /usr/local/etc/nginx/conf.d /var/run/modsecurity
+sysrc varnishd_storage="malloc,512M"
 
-chmod 600 /usr/local/etc/nginx/conf.d /var/run/modsecurity
+sysrc varnishd_admin=":8081"
 
 mv /usr/local/etc/nginx/nginx.conf /usr/local/etc/nginx/nginx.conf_bk
 
 cd /usr/local/etc/nginx/ && fetch https://raw.githubusercontent.com/Wamphyre/AutoTools/master/nginx.conf
 
-fetch https://raw.githubusercontent.com/Wamphyre/AutoTools/master/compression.conf
-
-fetch https://raw.githubusercontent.com/Wamphyre/AutoTools/master/modsecurity.conf
+mkdir conf.d
 
 touch /usr/local/etc/nginx/conf.d/default_vhost.conf && cd /usr/local/etc/nginx/conf.d/
 
 DOMINIO=$(hostname)
 
-echo " upstream php {
-    server  unix:/var/run/php-wordpress.sock;
-}
-
-# HTTP (port 80) default server used only to redirect all requests to HTTPS version
-server {
-    # listening socket that will bind to port 80 on all available IPv4 addresses
-    listen                     80 default_server;
-
-    # listening socket that will bind to port 80 on all available IPv6 addresses
-    listen                     [::]:80 default_server;
-
-    # HTTP redirection to HTTPS
-    return                     301 https://\$host\$request_uri;
-}
-
-
-# HTTPS (port 443) server - our website
+echo "# HTTPS (port 443) server - our website
 server {
     # listening socket that will bind to port 443 on all available IPv4 addresses
     listen                     443 ssl http2;
@@ -125,88 +70,73 @@ server {
     # listening socket that will bind to port 443 on all available IPv6 addresses
     listen                     [::]:443 ssl;
 
-    # brotli and gzip compression configuration
-    include                    compression.conf;
+    # HTTP redirection to HTTPS
+    return                     301 https://\$host\$request_uri;
 
     root                       /usr/local/www/public_html;
     index                      index.php;
 
     # change this to your domain name (domain.com) or host name (blog.domain.com)
-    server_name                $DOMINIO;   
-
-    # handle weird requests in a rude manner
-    if (\$host != \$server_name) {
-         return                418;
-    }
-
+    server_name                $DOMINIO;  
+    
     # DNS resolver - you may want to change it to some other provider,
     # e.g. OpenDNS: 208.67.222.222
     # or Google: 8.8.8.8
     # (9.9.9.9 is https://quad9.net )
     resolver                   1.1.1.1;
-
     # allow POSTs to static pages
     error_page                 405    =200 \$uri;
-
     access_log                 /var/log/nginx/$DOMINIO-access.log;
     error_log                  /var/log/nginx/$DOMINIO-error.log;
 
-    location / {
-        ModSecurityEnabled     on;
-        ModSecurityConfig      modsecurity.conf;
-        # permalinks
-        try_files              \$uri \$uri/ /index.php?\$args;
-        location /wp-admin {
-            ModSecurityEnabled          off;
-            # admin-ajax.php and load-styles.php under wp-admin are allowed
-            location ~ /wp-admin/(admin-ajax|load-styles)\.php {
-                fastcgi_pass            php;
-                include                 fastcgi.conf;
-            }
-        }
-        
-        }
-        # deny access to xmlrpc.php which allows brute-forcing at a higher rates
-        # than wp-login.php; this may break some functionality, like WordPress
-        # iOS/Android app posting 
-        location ~* /xmlrpc\.php {
-            deny                        all;
-        }
-        # cache binary and SVG files for one month, don't log these requests
-        location ~* \.(eot|gif|ico|jpg|png|jpeg|otf|pdf|swf|ttf|woff|woff2|mp4|svg)$ {
-            expires                     1M;
-            add_header                  Cache-Control public;
-            access_log                  off;
-        }
+    # gzip compression
 
-        # don't log requests to robots.txt and ads.txt
-        location ~ /(robots|ads)\.txt {
-            allow                       all;
-            log_not_found               off;
-            access_log                  off;
-        }
-        # handle PHP scripts
-        location ~ .php$ {
-	    fastcgi_pass                php;
-            fastcgi_index               index.php;
-            include                     fastcgi.conf;
-        }
+    gzip on;
+    gzip_disable "msie6";
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_buffers 16 8k;
+    gzip_http_version 1.1;
+    gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+    # no logging for favicon
+
+    location ~ favicon.ico\$ {
+        access_log off;
     }
+
+    # deny access to .htaccess files
+    
+    location ~ /\.ht {
+        deny all;
+    }
+
+    # expires of assets (per extension)
+
+    location ~ .(jpe?g|gif|png|webp|ico|css|js|zip|tgz|gz|rar|bz2|7z|tar|pdf|txt|mp4|m4v|webm|flv|wav|swf)\$ {
+        if (\$args ~ [0-9]+) {
+            expires 30d;
+        } 
+    }
+
+    # expires of assets (per path)
+
+    location ~ ^/(css|js|img|files) {
+        if (\$args ~ [0-9]+) {
+            expires 30d;
+        } 
+    }
+}
 " >> default_vhost.conf
 
 service nginx start
 
+service varnish start
+
 mv /usr/local/etc/php.ini-production /usr/local/etc/php.ini-production_bk
 
 cd /usr/local/etc/ && fetch https://raw.githubusercontent.com/Wamphyre/AutoTools/master/php.ini
-
-mv /usr/local/etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf_bk
-
-cd /usr/local/etc/php-fpm.d/ && fetch https://raw.githubusercontent.com/Wamphyre/AutoTools/master/www.conf
-
-sysrc php_fpm_enable=YES
-
-service php-fpm start
 
 mkdir /usr/local/www/public_html
 
@@ -214,7 +144,7 @@ cd /usr/local/www/public_html
 
 chown -R www:www /usr/local/www/public_html/
 
-touch index.html
+touch index.php
 
 echo "FREEBSD WEB SERVER TESTING!! OK!" >> index.php
 
@@ -226,7 +156,7 @@ sysrc mysql_args="--bind-address=127.0.0.1"
 
 service mysql-server start
 
-sleep 10
+sleep 5
 
 /usr/local/bin/mysql_secure_installation
 
@@ -241,8 +171,6 @@ pkg install -y phpMyAdmin-php72
 ln -s /usr/local/www/phpMyAdmin/ /usr/local/www/public_html/phpmyadmin
 
 service nginx restart
-
-service php-fpm restart
 
 cd;
 
@@ -273,20 +201,6 @@ echo 'hw.snd.maxautovchans=32' >> /etc/sysctl.conf
 echo 'vfs.lorunningspace=1048576' >> /etc/sysctl.conf
 echo 'vfs.hirunningspace=5242880' >> /etc/sysctl.conf
 echo 'kern.ipc.shm_allow_removed=1' >> /etc/sysctl.conf
-echo 'hint.pcm.0.buffersize=65536' >> /boot/loader.conf
-echo 'hint.pcm.1.buffersize=65536' >> /boot/loader.conf
-echo 'hw.snd.feeder_buffersize=65536' >> /boot/loader.conf
-echo 'hw.snd.latency=0' >> /boot/loader.conf
-echo 'hint.pcm.0.eq="1"' >> /boot/loader.conf
-echo 'hint.pcm.1.eq="1"' >> /boot/loader.conf
-echo 'hint.pcm.2.eq="1"' >> /boot/loader.conf
-echo 'hint.pcm.3.eq="1"' >> /boot/loader.conf
-echo 'hint.pcm.4.eq="1"' >> /boot/loader.conf
-echo 'hint.pcm.5.eq="1"' >> /boot/loader.conf
-echo 'hint.pcm.6.eq="1"' >> /boot/loader.conf
-echo 'hint.pcm.7.eq="1"' >> /boot/loader.conf
-echo 'hint.pcm.8.eq="1"' >> /boot/loader.conf
-echo 'hint.pcm.9.eq="1"' >> /boot/loader.conf
 echo 'hw.snd.vpc_autoreset=0' >> /boot/loader.conf
 echo 'hw.syscons.bell=0' >> /boot/loader.conf
 echo 'hw.usb.no_pf=1' >> /boot/loader.conf
@@ -446,8 +360,6 @@ echo "Limpiando sistema..."
 echo ""
 
 pkg clean -y && pkg autoremove -y
-
-pkg delete -f -y autoconf\* automake\* apache24\*
 
 echo ""
 
