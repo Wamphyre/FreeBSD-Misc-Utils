@@ -20,34 +20,23 @@ ln -s /usr/local/www/phpMyAdmin/ /usr/local/www/public_html/$DOMINIO/phpmyadmin
 
 echo ""
 
-echo "upstream php {
-    server  unix:/var/run/php-wordpress.sock;
-}
-# HTTP (port 80) default server used only to redirect all requests to HTTPS version
-server {
-    # listening socket that will bind to port 80 on all available IPv4 addresses
-    listen                     80 default_server;
-    # listening socket that will bind to port 80 on all available IPv6 addresses
-    listen                     [::]:80 default_server;
-    # HTTP redirection to HTTPS
-    return                     301 https://\$host\$request_uri;
-}
-# HTTPS (port 443) server - our website
+echo "# HTTPS (port 443) server - our website
 server {
     # listening socket that will bind to port 443 on all available IPv4 addresses
     listen                     443 ssl http2;
+
     # listening socket that will bind to port 443 on all available IPv6 addresses
     listen                     [::]:443 ssl;
-    # brotli and gzip compression configuration
-    include                    compression.conf;
-    root                       /usr/local/www/public_html/$DOMINIO;
+
+    # HTTP redirection to HTTPS
+    return                     301 https://\$host\$request_uri;
+
+    root                       /usr/local/www/public_html;
     index                      index.php;
+
     # change this to your domain name (domain.com) or host name (blog.domain.com)
-    server_name                $DOMINIO;   
-    # handle weird requests in a rude manner
-    if (\$host != \$server_name) {
-         return                418;
-    }
+    server_name                $DOMINIO;  
+    
     # DNS resolver - you may want to change it to some other provider,
     # e.g. OpenDNS: 208.67.222.222
     # or Google: 8.8.8.8
@@ -57,46 +46,46 @@ server {
     error_page                 405    =200 \$uri;
     access_log                 /var/log/nginx/$DOMINIO-access.log;
     error_log                  /var/log/nginx/$DOMINIO-error.log;
-    location / {
-        ModSecurityEnabled     on;
-        ModSecurityConfig      modsecurity.conf;
-        # permalinks
-        try_files              \$uri \$uri/ /index.php?\$args;
-        location /wp-admin {
-            ModSecurityEnabled          off;
-            # admin-ajax.php and load-styles.php under wp-admin are allowed
-            location ~ /wp-admin/(admin-ajax|load-styles)\.php {
-                fastcgi_pass            php;
-                include                 fastcgi.conf;
-            }
-        }
-        
-        }
-        # deny access to xmlrpc.php which allows brute-forcing at a higher rates
-        # than wp-login.php; this may break some functionality, like WordPress
-        # iOS/Android app posting 
-        location ~* /xmlrpc\.php {
-            deny                        all;
-        }
-        # cache binary and SVG files for one month, don't log these requests
-        location ~* \.(eot|gif|ico|jpg|png|jpeg|otf|pdf|swf|ttf|woff|woff2|mp4|svg)$ {
-            expires                     1M;
-            add_header                  Cache-Control public;
-            access_log                  off;
-        }
-        # don't log requests to robots.txt and ads.txt
-        location ~ /(robots|ads)\.txt {
-            allow                       all;
-            log_not_found               off;
-            access_log                  off;
-        }
-        # handle PHP scripts
-        location ~ .php$ {
-	    fastcgi_pass                php;
-            fastcgi_index               index.php;
-            include                     fastcgi.conf;
-        }
+
+    # gzip compression
+
+    gzip on;
+    gzip_disable "msie6";
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_buffers 16 8k;
+    gzip_http_version 1.1;
+    gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+    # no logging for favicon
+
+    location ~ favicon.ico$ {
+        access_log off;
     }
+
+    # deny access to .htaccess files
+    
+    location ~ /\.ht {
+        deny all;
+    }
+
+    # expires of assets (per extension)
+
+    location ~ .(jpe?g|gif|png|webp|ico|css|js|zip|tgz|gz|rar|bz2|7z|tar|pdf|txt|mp4|m4v|webm|flv|wav|swf)$ {
+        if ($args ~ [0-9]+) {
+            expires 30d;
+        } 
+    }
+
+    # expires of assets (per path)
+
+    location ~ ^/(css|js|img|files) {
+        if ($args ~ [0-9]+) {
+            expires 30d;
+        } 
+    }
+}
 " >> $DOMINIO.conf
 
 echo "VHOST para $DOMINIO creado correctamente"
