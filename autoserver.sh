@@ -153,10 +153,6 @@ cd /usr/local/www/public_html
 
 chown -R www:www /usr/local/www/public_html/
 
-touch index.php
-
-echo "FREEBSD WEB SERVER TESTING!! OK!" >> index.php
-
 echo ""
 
 sysrc mysql_enable="YES"
