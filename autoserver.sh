@@ -68,9 +68,6 @@ server {
 listen 8080;
 listen [::]:8080;
 
-# HTTP redirection to HTTPS
-    return                     301 https://$host$request_uri;
-
 server_name $DOMINIO;
 
 root /usr/local/www/public_html;
