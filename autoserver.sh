@@ -132,7 +132,7 @@ server {
 
 service nginx start
 
-service varnish start
+service varnishd start
 
 mv /usr/local/etc/php.ini-production /usr/local/etc/php.ini-production_bk
 
