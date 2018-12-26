@@ -58,10 +58,6 @@ cd /usr/local/etc/nginx/ && fetch https://raw.githubusercontent.com/Wamphyre/Aut
 
 mkdir conf.d
 
-mkdir -p /etc/ssl/nginx && chmod 600 /etc/ssl/nginx
-
-openssl dhparam -out /etc/ssl/nginx/dhparam.pem 4096 && chmod 600 /etc/ssl/nginx/dhparam.pem
-
 touch /usr/local/etc/nginx/conf.d/default_vhost.conf && cd /usr/local/etc/nginx/conf.d/
 
 DOMINIO=$(hostname)
