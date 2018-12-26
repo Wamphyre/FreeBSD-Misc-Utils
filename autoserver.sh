@@ -46,7 +46,7 @@ sysrc varnishd_enable=YES
 
 sysrc varnishd_listen=":80"
 
-sysrc varnishd_backend="localhost:443"
+sysrc varnishd_backend="localhost:8080"
 
 sysrc varnishd_storage="malloc,512M"
 
@@ -62,16 +62,28 @@ touch /usr/local/etc/nginx/conf.d/default_vhost.conf && cd /usr/local/etc/nginx/
 
 DOMINIO=$(hostname)
 
-echo "# HTTPS (port 443) server - our website
+echo "
+
+server {
+listen 8080;
+listen [::]:8080;
+
+# HTTP redirection to HTTPS
+    return                     301 https://$host$request_uri;
+
+server_name $DOMINIO;
+
+root /usr/local/www/public_html;
+index index.php;
+}
+
+# HTTPS (port 443) server - our website
 server {
     # listening socket that will bind to port 443 on all available IPv4 addresses
     listen                     443 ssl http2;
 
     # listening socket that will bind to port 443 on all available IPv6 addresses
     listen                     [::]:443 ssl;
-
-    # HTTP redirection to HTTPS
-    return                     301 https://\$host\$request_uri;
 
     root                       /usr/local/www/public_html;
     index                      index.php;
