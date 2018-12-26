@@ -50,7 +50,7 @@ server {
     # gzip compression
 
     gzip on;
-    gzip_disable "msie6";
+    gzip_disable "\msie6";
     gzip_vary on;
     gzip_proxied any;
     gzip_comp_level 6;
@@ -73,7 +73,7 @@ server {
     # expires of assets (per extension)
 
     location ~ .(jpe?g|gif|png|webp|ico|css|js|zip|tgz|gz|rar|bz2|7z|tar|pdf|txt|mp4|m4v|webm|flv|wav|swf)$ {
-        if ($args ~ [0-9]+) {
+        if (\$args ~ [0-9]+) {
             expires 30d;
         } 
     }
@@ -81,7 +81,7 @@ server {
     # expires of assets (per path)
 
     location ~ ^/(css|js|img|files) {
-        if ($args ~ [0-9]+) {
+        if (\$args ~ [0-9]+) {
             expires 30d;
         } 
     }
@@ -97,8 +97,6 @@ echo "Reiniciando NGINX"
 sleep 2
 
 service nginx restart
-
-service php-fpm restart
 
 echo ""
 
