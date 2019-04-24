@@ -22,9 +22,9 @@ echo "Paquetes actualizados"
 
 echo ""
 
-echo "INSTALANDO VARNISH + NGINX + CERTBOT + PHP72 + MARIADB"
+echo "INSTALANDO VARNISH + NGINX + CERTBOT + PHP73 + MARIADB"
 
-pkg install -y php72 php72-mysqli php72-session php72-xml php72-hash php72-ftp php72-curl php72-tokenizer php72-zlib php72-zip php72-filter php72-gd php72-openssl
+pkg install -y php73 php73-mysqli php73-session php73-xml php73-hash php73-ftp php73-curl php73-tokenizer php73-zlib php73-zip php73-filter php73-gd php73-openssl
 
 pkg install -y mariadb102-client mariadb102-server
 
@@ -36,7 +36,7 @@ pkg install -y nano htop git libtool automake autoconf curl geoip
 
 pkg install -y nginx
 
-pkg install -y varnish5
+pkg install -y varnish6
 
 echo "Configurando Stack..."
 
@@ -100,14 +100,12 @@ server {
 
     # gzip compression
 
-    gzip on;
-    gzip_disable "\msie6";
-    gzip_vary on;
-    gzip_proxied any;
-    gzip_comp_level 6;
-    gzip_buffers 16 8k;
-    gzip_http_version 1.1;
-    gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+gzip on;
+gzip_vary on;
+gzip_min_length 1024;
+gzip_proxied expired no-cache no-store private auth;
+gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml;
+gzip_disable "MSIE [1-6]\.";
 
     # no logging for favicon
 
@@ -171,7 +169,7 @@ if [ "$PHPMYADMIN" = "si" ]
 
 then cd /usr/local/www/public_html/;
 
-pkg install -y phpMyAdmin-php72
+pkg install -y phpMyAdmin-php73
 
 ln -s /usr/local/www/phpMyAdmin/ /usr/local/www/public_html/phpmyadmin
 
@@ -200,7 +198,6 @@ echo 'kern.maxvnodes=60000' >> /etc/sysctl.conf
 echo 'kern.coredump=0' >> /etc/sysctl.conf
 echo 'kern.sched.preempt_thresh=224' >> /etc/sysctl.conf
 echo 'kern.sched.slice=3' >> /etc/sysctl.conf
-echo 'kern.maxfiles=10000' >> /etc/sysctl.conf
 echo 'hw.snd.feeder_rate_quality=3' >> /etc/sysctl.conf
 echo 'hw.snd.maxautovchans=32' >> /etc/sysctl.conf
 echo 'vfs.lorunningspace=1048576' >> /etc/sysctl.conf
