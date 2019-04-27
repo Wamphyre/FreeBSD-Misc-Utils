@@ -60,13 +60,15 @@ mkdir conf.d
 
 touch /usr/local/etc/nginx/conf.d/default_vhost.conf && cd /usr/local/etc/nginx/conf.d/
 
+DOMINIO=$(hostname)
+
 echo "
 
 server {
 listen 8080;
 listen [::]:8080;
 
-server_name localhost;
+server_name $DOMINIO;
 
 root /usr/local/www/public_html;
 index index.php;
@@ -84,7 +86,7 @@ server {
     index                      index.php;
 
     # change this to your domain name (domain.com) or host name (blog.domain.com)
-    server_name                localhost;  
+    server_name                $DOMINIO;  
     
     # DNS resolver - you may want to change it to some other provider,
     # e.g. OpenDNS: 208.67.222.222
@@ -93,8 +95,8 @@ server {
     resolver                   1.1.1.1;
     # allow POSTs to static pages
     error_page                 405    =200 \$uri;
-    access_log                 /var/log/nginx/default-access.log;
-    error_log                  /var/log/nginx/default-error.log;
+    access_log                 /var/log/nginx/$DOMINIO-access.log;
+    error_log                  /var/log/nginx/$DOMINIO-error.log;
 
     # gzip compression
 
