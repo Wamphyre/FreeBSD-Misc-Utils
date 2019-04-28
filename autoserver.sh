@@ -72,21 +72,6 @@ server_name $DOMINIO;
 
 root /usr/local/www/public_html;
 index index.php;
-}
-
-# HTTPS (port 443) server - our website
-server {
-    # listening socket that will bind to port 443 on all available IPv4 addresses
-    listen                     443 ssl http2;
-
-    # listening socket that will bind to port 443 on all available IPv6 addresses
-    listen                     [::]:443 ssl;
-
-    root                       /usr/local/www/public_html;
-    index                      index.php;
-
-    # change this to your domain name (domain.com) or host name (blog.domain.com)
-    server_name                $DOMINIO;  
     
     # DNS resolver - you may want to change it to some other provider,
     # e.g. OpenDNS: 208.67.222.222
