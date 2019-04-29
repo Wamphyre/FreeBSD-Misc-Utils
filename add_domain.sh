@@ -50,8 +50,8 @@ gzip_disable "MSIE [1-6]\.";
 
         location / {
                 # This is cool because no php is touched for static content.
-                # include the "$is_args$args" so non-default permalinks doesn't break when using query string
-                try_files $uri $uri/ /index.php$is_args$args;
+                # include the "\$is_args\$args" so non-default permalinks doesn't break when using query string
+                try_files \$uri \$uri/ /index.php\$is_args\$args;
         }
 
     # no logging for favicon
