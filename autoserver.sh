@@ -26,7 +26,7 @@ echo "INSTALANDO VARNISH + NGINX + CERTBOT + PHP73 + MARIADB"
 
 pkg install -y php73 php73-mysqli php73-session php73-xml php73-hash php73-ftp php73-curl php73-tokenizer php73-zlib php73-zip php73-filter php73-gd php73-openssl
 
-pkg install -y mariadb102-client mariadb102-server
+pkg install -y mariadb103-client mariadb103-server
 
 pkg install -y py36-certbot-nginx
 
@@ -41,6 +41,8 @@ pkg install -y varnish6
 echo "Configurando Stack..."
 
 sysrc nginx_enable="YES"
+
+sysrc php_fpm_enable="YES"
 
 sysrc varnishd_enable=YES
 
@@ -71,7 +73,7 @@ listen [::]:8080;
 server_name $DOMINIO;
 
 root /usr/local/www/public_html;
-index index.php;
+index index.html;
     
     # DNS resolver - you may want to change it to some other provider,
     # e.g. OpenDNS: 208.67.222.222
@@ -98,11 +100,13 @@ gzip_disable "MSIE [1-6]\.";
         access_log off;
     }
 
-    # deny access to .htaccess files
-    
-    location ~ /\.ht {
-        deny all;
-    }
+     location ~ \.php$ {
+        root	/usr/local/www/nginx;
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        fastcgi_param SCRIPT_FILENAME $request_filename;    
+        include        fastcgi_params;
+        	}
 
     # expires of assets (per extension)
 
@@ -159,6 +163,8 @@ pkg install -y phpMyAdmin-php73
 ln -s /usr/local/www/phpMyAdmin/ /usr/local/www/public_html/phpmyadmin
 
 service nginx restart
+
+service php-fpm restart
 
 cd;
 
