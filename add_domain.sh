@@ -48,6 +48,12 @@ gzip_proxied expired no-cache no-store private auth;
 gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml;
 gzip_disable "MSIE [1-6]\.";
 
+        location / {
+                # This is cool because no php is touched for static content.
+                # include the "$is_args$args" so non-default permalinks doesn't break when using query string
+                try_files $uri $uri/ /index.php$is_args$args;
+        }
+
     # no logging for favicon
 
     location ~ favicon.ico$ {
@@ -58,13 +64,13 @@ gzip_disable "MSIE [1-6]\.";
         root	/usr/local/www/public_html/$DOMINIO;
         fastcgi_pass   127.0.0.1:9000;
         fastcgi_index  index.php;
-        fastcgi_param SCRIPT_FILENAME $request_filename;    
+        fastcgi_param SCRIPT_FILENAME \$request_filename;    
         include        fastcgi_params;
         	}
 
     # expires of assets (per extension)
 
-    location ~ .(jpe?g|gif|png|webp|ico|css|js|zip|tgz|gz|rar|bz2|7z|tar|pdf|txt|mp4|m4v|webm|flv|wav|swf)$ {
+    location ~ .(jpeg|gif|png|webp|ico|css|js|zip|tgz|gz|rar|bz2|7z|tar|pdf|txt|mp4|m4v|webm|flv|wav|swf)$ {
         if (\$args ~ [0-9]+) {
             expires 30d;
         } 
