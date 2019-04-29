@@ -27,7 +27,7 @@ listen [::]:8080;
 server_name $DOMINIO;
 
 root /usr/local/www/public_html/$DOMINIO;
-index index.php;
+index index.html;
     
     # DNS resolver - you may want to change it to some other provider,
     # e.g. OpenDNS: 208.67.222.222
@@ -54,11 +54,13 @@ gzip_disable "MSIE [1-6]\.";
         access_log off;
     }
 
-    # deny access to .htaccess files
-    
-    location ~ /\.ht {
-        deny all;
-    }
+        location ~ \.php$ {
+        root	/usr/local/www/nginx;
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        fastcgi_param SCRIPT_FILENAME $request_filename;    
+        include        fastcgi_params;
+        	}
 
     # expires of assets (per extension)
 
