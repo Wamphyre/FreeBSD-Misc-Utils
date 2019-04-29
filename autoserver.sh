@@ -94,6 +94,12 @@ gzip_proxied expired no-cache no-store private auth;
 gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml;
 gzip_disable "MSIE [1-6]\.";
 
+        location / {
+                # This is cool because no php is touched for static content.
+                # include the "$is_args$args" so non-default permalinks doesn't break when using query string
+                try_files $uri $uri/ /index.php$is_args$args;
+        }
+
     # no logging for favicon
 
     location ~ favicon.ico\$ {
