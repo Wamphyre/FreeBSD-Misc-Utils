@@ -73,7 +73,7 @@ listen [::]:8080;
 server_name $DOMINIO;
 
 root /usr/local/www/public_html;
-index index.html;
+index index.php index.html;
     
     # DNS resolver - you may want to change it to some other provider,
     # e.g. OpenDNS: 208.67.222.222
