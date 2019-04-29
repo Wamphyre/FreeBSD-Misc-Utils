@@ -55,7 +55,7 @@ gzip_disable "MSIE [1-6]\.";
     }
 
         location ~ \.php$ {
-        root	/usr/local/www/nginx;
+        root	/usr/local/www/public_html;
         fastcgi_pass   127.0.0.1:9000;
         fastcgi_index  index.php;
         fastcgi_param SCRIPT_FILENAME $request_filename;    
