@@ -62,7 +62,7 @@ gzip_disable "MSIE [1-6]\.";
         access_log off;
     }
 
-        location ~ \.php$ {
+        location ~ [^/]\.php(/|$) {
         root	/usr/local/www/public_html/$DOMINIO;
         fastcgi_pass   127.0.0.1:9000;
         fastcgi_index  index.php;
