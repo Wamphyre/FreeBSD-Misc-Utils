@@ -24,7 +24,7 @@ echo ""
 
 echo "INSTALANDO VARNISH + NGINX + CERTBOT + PHP73 + MARIADB"
 
-pkg install -y php73 php73-mysqli php73-session php73-xml php73-hash php73-ftp php73-curl php73-tokenizer php73-zlib php73-zip php73-filter php73-gd php73-openssl
+pkg install -y php73 php73-mysqli php73-session php73-xml php73-hash php73-ftp php73-curl php73-tokenizer php73-zlib php73-zip php73-filter php73-gd php73-openssl php73-pdo
 
 pkg install -y mariadb103-client mariadb103-server
 
