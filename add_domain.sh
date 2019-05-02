@@ -56,11 +56,27 @@ gzip_disable "MSIE [1-6]\.";
                 try_files \$uri \$uri/ /index.php\$is_args\$args;
         }
 
-    # no logging for favicon
+# send expire headers
+location ~* ^.+\.(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|rss|atom|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)$ {
+    access_log off; # optional
+    log_not_found off; # optional
+    expires max;
+}
 
-    location ~ favicon.ico$ {
-        access_log off;
-    }
+location = ^/favicon.ico {
+    access_log off;
+    log_not_found off;
+}
+
+# robots noise...
+location = ^/robots.txt {
+    log_not_found off;
+    access_log off;
+    allow all;
+}
+
+# block access to hidden files (.htaccess per example)
+location ~ /\. { access_log off; log_not_found off; deny all; }
 
         location ~ [^/]\.php(/|$) {
         root	/usr/local/www/public_html/$DOMINIO;
@@ -69,22 +85,6 @@ gzip_disable "MSIE [1-6]\.";
         fastcgi_param SCRIPT_FILENAME \$request_filename;    
         include        fastcgi_params;
         	}
-
-    # expires of assets (per extension)
-
-    location ~ .(jpeg|gif|png|webp|ico|css|js|zip|tgz|gz|rar|bz2|7z|tar|pdf|txt|mp4|m4v|webm|flv|wav|swf)$ {
-        if (\$args ~ [0-9]+) {
-            expires 30d;
-        } 
-    }
-
-    # expires of assets (per path)
-
-    location ~ ^/(css|js|img|files) {
-        if (\$args ~ [0-9]+) {
-            expires 30d;
-        } 
-    }
 }
 " >> $DOMINIO.conf
 
