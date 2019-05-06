@@ -41,15 +41,6 @@ index index.php index.html;
     access_log                 /var/log/nginx/$DOMINIO-access.log;
     error_log                  /var/log/nginx/$DOMINIO-error.log;
 
-    # gzip compression
-
-gzip on;
-gzip_vary on;
-gzip_min_length 1024;
-gzip_proxied expired no-cache no-store private auth;
-gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml;
-gzip_disable "MSIE [1-6]\.";
-
         location / {
                 # This is cool because no php is touched for static content.
                 # include the "\$is_args\$args" so non-default permalinks doesn't break when using query string
