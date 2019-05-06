@@ -50,7 +50,7 @@ echo "COMPILANDO NGINX, POR FAVOR, SELECCIONA Y MARCA LA CASILLA MODSECURITY3"
 
 sleep 5
 
-cd /usr/port/www/nginx && make install clean 
+cd /usr/ports/www/nginx/ && make install clean 
 
 cd /tmp
 
@@ -192,9 +192,9 @@ mv /usr/local/etc/php.ini-production /usr/local/etc/php.ini-production_bk
 
 cd /usr/local/etc/ && fetch https://raw.githubusercontent.com/Wamphyre/AutoTools/master/php.ini
 
-mkdir /usr/local/www/public_html
+mkdir /usr/local/www/public_html/
 
-cd /usr/local/www/public_html
+cd /usr/local/www/public_html/
 
 chown -R www:www /usr/local/www/public_html/
 
