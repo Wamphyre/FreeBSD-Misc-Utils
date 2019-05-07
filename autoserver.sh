@@ -46,7 +46,7 @@ pkg install -y libxml2 libxslt modsecurity3 python git binutils pcre libgd openl
 
 echo ""
 
-echo "COMPILANDO NGINX, POR FAVOR, SELECCIONA Y MARCA LA CASILLA MODSECURITY3 Y BROTLI"
+echo "COMPILANDO NGINX, POR FAVOR, SELECCIONA Y MARCA LA CASILLA MODSECURITY3"
 
 sleep 5
 
