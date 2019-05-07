@@ -31,11 +31,6 @@ server_name $DOMINIO;
 root /usr/local/www/public_html/$DOMINIO;
 index index.php index.html;
     
-    # DNS resolver - you may want to change it to some other provider,
-    # e.g. OpenDNS: 208.67.222.222
-    # or Google: 8.8.8.8
-    # (9.9.9.9 is https://quad9.net )
-    resolver                   1.1.1.1;
     # allow POSTs to static pages
     error_page                 405    =200 \$uri;
     access_log                 /var/log/nginx/$DOMINIO-access.log;
