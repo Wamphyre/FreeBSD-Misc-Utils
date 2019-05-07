@@ -138,6 +138,13 @@ index index.php index.html;
                 # include the "\$is_args\$args" so non-default permalinks doesn't break when using query string
                 try_files \$uri \$uri/ /index.php\$is_args\$args;
         }
+	
+	 # deny access to xmlrpc.php which allows brute-forcing at a higher rates
+        # than wp-login.php; this may break some functionality, like WordPress
+        # iOS/Android app posting 
+        location ~* /xmlrpc\.php {
+            deny                        all;
+        }
 
 # Media: images, icons, video, audio, HTC
 location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|htc)\$ {
