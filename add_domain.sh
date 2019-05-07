@@ -47,11 +47,18 @@ index index.php index.html;
                 try_files \$uri \$uri/ /index.php\$is_args\$args;
         }
 
-# send expire headers
-location ~* ^.+\.(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|rss|atom|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)$ {
-    access_log off; # optional
-    log_not_found off; # optional
-    expires max;
+# Media: images, icons, video, audio, HTC
+location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|htc)$ {
+	expires 1M;
+	access_log off;
+	add_header Cache-Control "public";
+}
+
+# CSS and Javascript
+location ~* \.(?:css|js)$ {
+	expires 1y;
+	access_log off;
+	add_header Cache-Control "public";
 }
 
 location = ^/favicon.ico {
