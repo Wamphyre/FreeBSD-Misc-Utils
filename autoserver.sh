@@ -137,26 +137,24 @@ index index.php index.html;
     access_log                 /var/log/nginx/$DOMINIO-access.log;
     error_log                  /var/log/nginx/$DOMINIO-error.log;
 
-    # gzip compression
-
-gzip on;
-gzip_vary on;
-gzip_min_length 1024;
-gzip_proxied expired no-cache no-store private auth;
-gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml;
-gzip_disable "MSIE [1-6]\.";
-
         location / {
                 # This is cool because no php is touched for static content.
                 # include the "\$is_args\$args" so non-default permalinks doesn't break when using query string
                 try_files \$uri \$uri/ /index.php\$is_args\$args;
         }
 
-# send expire headers
-location ~* ^.+\.(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|rss|atom|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)$ {
-    access_log off; # optional
-    log_not_found off; # optional
-    expires max;
+# Media: images, icons, video, audio, HTC
+location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|htc)\$ {
+	expires 1M;
+	access_log off;
+	add_header Cache-Control "public";
+}
+
+# CSS and Javascript
+location ~* \.(?:css|js)\$ {
+	expires 1y;
+	access_log off;
+	add_header Cache-Control "public";
 }
 
 location = ^/favicon.ico {
