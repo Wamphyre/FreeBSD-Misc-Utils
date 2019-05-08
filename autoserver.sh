@@ -30,7 +30,7 @@ portsnap fetch auto
 
 echo "INSTALANDO VARNISH + CERTBOT + PHP73 + MARIADB"
 
-pkg install -y php73 php73-mysqli php73-session php73-xml php73-hash php73-ftp php73-curl php73-tokenizer php73-zlib php73-zip php73-filter php73-gd php73-openssl php73-pdo
+pkg install -y php73 php73-mysqli php73-session php73-xml php73-hash php73-ftp php73-curl php73-tokenizer php73-zlib php73-zip php73-filter php73-gd php73-openssl php73-pdo php73-bcmath php73-exif php73-fileinfo php73-pecl-imagick-im7
 
 pkg install -y mariadb103-client mariadb103-server
 
