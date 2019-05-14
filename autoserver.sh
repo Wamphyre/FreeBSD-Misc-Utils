@@ -403,8 +403,8 @@ pass out quick on $ext_if' >> /etc/pf.conf
 
 IP=$(curl ifconfig.me)
 
-echo "pass in on $ext_if proto tcp from any to $IP port 21 flags S/SA synproxy state
-pass in on $ext_if proto tcp from any to $IP port > 49151 keep state
+echo "pass in on \$ext_if proto tcp from any to $IP port 21 flags S/SA synproxy state
+pass in on \$ext_if proto tcp from any to $IP port > 49151 keep state
 # keep stats of outgoing connections
 pass out keep state" >> /etc/pf.conf
 
