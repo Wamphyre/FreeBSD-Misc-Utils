@@ -397,7 +397,7 @@ pass quick on $ext_if proto icmp
 pass quick on $ext_if proto icmp6
 # allow incoming traffic to services hosted by this machine
 pass in quick on $ext_if proto tcp to port $inbound_tcp_services
-#pass in quick on $ext_if proto udp to port $inbound_udp_services
+pass in quick on $ext_if proto udp to port $inbound_udp_services
 # allow all outgoing traffic
 pass out quick on $ext_if' >> /etc/pf.conf
 
