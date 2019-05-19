@@ -46,7 +46,7 @@ pass quick on $ext_if proto icmp
 pass quick on $ext_if proto icmp6
 # allow incoming traffic to services hosted by this machine
 pass in quick on $ext_if proto tcp to port $inbound_tcp_services
-#pass in quick on $ext_if proto udp to port $inbound_udp_services
+pass in quick on $ext_if proto udp to port $inbound_udp_services
 # allow all outgoing traffic
 pass out quick on $ext_if
 pass in on $ext_if proto tcp from any to 108.61.176.8 port 21 flags S/SA synproxy state
