@@ -64,6 +64,12 @@ mkdir /usr/local/etc/modsecurity/crs
 
 cp rules/* /usr/local/etc/modsecurity/crs
 
+cd /usr/local/etc/modsecurity
+
+fetch https://raw.githubusercontent.com/Wamphyre/AutoTools/master/ip_blacklist.txt
+
+fetch https://raw.githubusercontent.com/Wamphyre/AutoTools/master/ip_blacklist.conf
+
 cd /usr/local/etc/modsecurity && touch unicode.mapping
 
 echo "1250  (ANSI - Central Europe)
