@@ -100,10 +100,6 @@ location ~ /\. { access_log off; log_not_found off; deny all; }
         limit_req_status 444;
     }
     }
-    
-           if (\$http_user_agent ~* "Mozilla/4\.0 \(compatible\; MSIE 6" ) {
-           return 444;
-        }
 	
 }
 " >> $DOMINIO.conf
