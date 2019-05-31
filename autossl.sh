@@ -20,6 +20,10 @@ sed -ie 's/^\s*listen 8080/listen 80/' /usr/local/etc/nginx/nginx.conf
 
 sed -ie 's/^\s*listen 8080/listen 80/' /usr/local/etc/nginx/conf.d/$DOMINIO.conf
 
+rm -rf /usr/local/etc/nginx/nginx.confe
+
+rm -rf /usr/local/etc/nginx/conf.d/$DOMINIO.confe
+
 service nginx restart
 
 sleep 3
@@ -47,6 +51,10 @@ echo ""
 sed -ie 's/^\s*listen 80/listen 8080/' /usr/local/etc/nginx/nginx.conf
 
 sed -ie 's/^\s*listen 80/listen 8080/' /usr/local/etc/nginx/conf.d/$DOMINIO.conf
+
+rm -rf /usr/local/etc/nginx/nginx.confe
+
+rm -rf /usr/local/etc/nginx/conf.d/$DOMINIO.confe
 
 service nginx restart
 
