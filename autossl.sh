@@ -52,6 +52,8 @@ sed -ie 's/^\s*listen 80/listen 8080/' /usr/local/etc/nginx/nginx.conf
 
 sed -ie 's/^\s*listen 80/listen 8080/' /usr/local/etc/nginx/conf.d/$DOMINIO.conf
 
+sed -ie 's/^\s*443 ssl/443 ssl http2/' /usr/local/etc/nginx/conf.d/$DOMINIO.conf
+
 rm -rf /usr/local/etc/nginx/nginx.confe
 
 rm -rf /usr/local/etc/nginx/conf.d/$DOMINIO.confe
