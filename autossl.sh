@@ -14,11 +14,15 @@ echo ""
 
 service varnishd stop
 
+sleep 3
+
 sed -ie 's/^\s*listen 8080/listen 80/' /usr/local/etc/nginx/nginx.conf
 
 sed -ie 's/^\s*listen 8080/listen 80/' /usr/local/etc/nginx/conf.d/$DOMINIO.conf
 
 service nginx restart
+
+sleep 3
 
 certbot-3.6 --nginx -d $DOMINIO
 
@@ -26,11 +30,15 @@ echo ""
 
 service nginx restart
 
+sleep 2
+
 echo ""
 
 certbot-3.6 enhance --hsts -d $DOMINIO
 
 echo ""
+
+sleep 2
 
 service nginx restart
 
@@ -41,6 +49,8 @@ sed -ie 's/^\s*listen 80/listen 8080/' /usr/local/etc/nginx/nginx.conf
 sed -ie 's/^\s*listen 80/listen 8080/' /usr/local/etc/nginx/conf.d/$DOMINIO.conf
 
 service nginx restart
+
+sleep 3
 
 service varnishd restart
 
