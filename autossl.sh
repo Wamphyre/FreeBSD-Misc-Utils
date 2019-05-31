@@ -16,7 +16,7 @@ service varnishd stop
 
 sed -ie 's/^\s*listen 8080/listen 80/' /usr/local/etc/nginx/nginx.conf
 
-sed -ie 's/^\s*listen 8080/listen 80/' /usr/local/www/public_html/$DOMINIO.conf
+sed -ie 's/^\s*listen 8080/listen 80/' /usr/local/etc/nginx/conf.d/$DOMINIO.conf
 
 service nginx restart
 
@@ -38,7 +38,7 @@ echo ""
 
 sed -ie 's/^\s*listen 80/listen 8080/' /usr/local/etc/nginx/nginx.conf
 
-sed -ie 's/^\s*listen 80/listen 8080/' /usr/local/www/public_html/$DOMINIO.conf
+sed -ie 's/^\s*listen 80/listen 8080/' /usr/local/etc/nginx/conf.d/$DOMINIO.conf
 
 service nginx restart
 
