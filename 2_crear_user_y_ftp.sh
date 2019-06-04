@@ -15,7 +15,7 @@ echo ; read -p "Dime nombre de usuario FTP a crear: " USER;
 echo ""
 
 pw groupadd ftpgroup -g 2001
-adduser -w random -g ftpgroup -u 2001 -g 2001 -s nologin -d /usr/local/www
+adduser -w random -g ftpgroup -u 2001 -g 2001 -s nologin -d /usr/home/
 
 echo ""
 
@@ -24,7 +24,7 @@ touch /etc/ftpchroot
 echo "
 $USER
 @ftpgroup
-$USER	/usr/local/www/$USER./public_html
+$USER	/usr/home/$USER./public_html
 @	public_html
 " >> /etc/ftpchroot
 
