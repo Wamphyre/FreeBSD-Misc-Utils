@@ -14,11 +14,11 @@ echo ; read -p "Dime nombre del usuario: " USUARIO;
 
 cd /usr/local/etc/nginx/conf.d && touch $DOMINIO.conf
 
-mkdir /usr/local/www/$USUARIO/public_html/$DOMINIO
+mkdir /usr/home/$USUARIO/public_html/$DOMINIO
 
-ln -s /usr/local/www/phpMyAdmin/ /usr/local/www/$USUARIO/public_html/$DOMINIO/phpmyadmin
+ln -s /usr/local/www/phpMyAdmin/ /usr/home/$USUARIO/public_html/$DOMINIO/phpmyadmin
 
-chown -R www:www /usr/local/www/$USUARIO/public_html/$DOMINIO
+chown -R www:www /usr/home/$USUARIO/public_html/$DOMINIO
 
 echo ""
 
@@ -30,7 +30,7 @@ listen [::]:8080;
 
 server_name $DOMINIO;
 
-root /usr/local/www/$USUARIO/public_html/$DOMINIO;
+root /usr/home/$USUARIO/public_html/$DOMINIO;
 index index.php index.html;
     
     # allow POSTs to static pages
@@ -89,7 +89,7 @@ location = ^/robots.txt {
 location ~ /\. { access_log off; log_not_found off; deny all; }
 
         location ~ [^/]\.php(/|$) {
-        root	/usr/local/www/$USUARIO/public_html/$DOMINIO;
+        root	/usr/home/$USUARIO/public_html/$DOMINIO;
         fastcgi_pass   127.0.0.1:9000;
         fastcgi_index  index.php;
         fastcgi_param SCRIPT_FILENAME \$request_filename;    
