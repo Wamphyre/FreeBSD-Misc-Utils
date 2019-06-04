@@ -26,8 +26,10 @@ rm -rf wordpress;
 
 echo "Reparando y estableciendo permisos..."
 
-chown -R www:www /usr/local/www/public_html/
-chown -R www:www /usr/local/www/public_html/*
+RUTA=$(pwd)
+
+chown -R www:www $RUTA
+chown -R www:www $RUTA*
 find . -type f -exec chmod 664 {} +
 find . -type d -exec chmod 775 {} +
 
