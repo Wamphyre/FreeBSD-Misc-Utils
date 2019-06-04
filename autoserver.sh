@@ -42,6 +42,8 @@ pkg install -y nano htop git libtool automake autoconf curl geoip
 
 pkg install -y varnish6
 
+pkg install -y sshguard
+
 pkg install -y libxml2 libxslt modsecurity3 python git binutils pcre libgd openldap-client
 
 echo ""
