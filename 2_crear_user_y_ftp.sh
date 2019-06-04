@@ -15,7 +15,7 @@ echo ; read -p "Dime nombre de usuario FTP a crear: " USER;
 echo ""
 
 pw groupadd ftpgroup -g 2001
-adduser -w random -g ftpgroup -u 2001 -g 2001 -s nologin -d /usr/home/
+adduser -w random -g ftpgroup -u 2001 -g 2001 -s nologin -d /usr/home
 
 echo ""
 
