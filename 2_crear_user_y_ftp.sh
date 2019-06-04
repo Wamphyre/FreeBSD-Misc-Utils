@@ -24,7 +24,7 @@ touch /etc/ftpchroot
 echo "
 $USER
 @ftpgroup
-$USER	/usr/local/www/./public_html
+$USER	/usr/local/www/$USER./public_html
 @	public_html
 " >> /etc/ftpchroot
 
