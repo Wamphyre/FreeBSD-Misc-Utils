@@ -42,7 +42,9 @@ pkg install -y nano htop git libtool automake autoconf curl geoip
 
 pkg install -y varnish6
 
-pkg install -y sshguard
+cd /usr/ports/security/sshguard-pf
+
+make install clean BATCH=yes
 
 pkg install -y libxml2 libxslt modsecurity3 python git binutils pcre libgd openldap-client
 
@@ -293,6 +295,7 @@ sysrc clear_tmp_enable="YES"
 sysrc syslogd_flags="-ss"
 sysrc sendmail_enable="YES"
 sysrc dumpdev="NO"
+sysrc sshguard_enable="YES"
 
 echo 'kern.elf64.nxstack=1' >> /etc/sysctl.conf
 echo 'security.bsd.map_at_zero=0' >> /etc/sysctl.conf
@@ -415,7 +418,9 @@ pass quick on $ext_if proto icmp6
 pass in quick on $ext_if proto tcp to port $inbound_tcp_services
 pass in quick on $ext_if proto udp to port $inbound_udp_services
 # allow all outgoing traffic
-pass out quick on $ext_if' >> /etc/pf.conf
+pass out quick on $ext_if
+table <sshguard> persist
+block in quick on $ext_if from <sshguard>' >> /etc/pf.conf
 
 IP=$(curl ifconfig.me)
 
@@ -425,6 +430,8 @@ pass in on \$ext_if proto tcp from any to $IP port > 49151 keep state
 pass out keep state" >> /etc/pf.conf
 
 echo ""
+
+service sshguard start
 
 echo "Reglas añadidas al firewall y configuradas para la interfaz $INTERFAZ"
 
