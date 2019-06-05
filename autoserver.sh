@@ -68,6 +68,10 @@ mkdir /usr/local/etc/modsecurity/crs
 
 cp rules/* /usr/local/etc/modsecurity/crs
 
+echo 'Include "/usr/local/etc/modsecurity/crs/*.conf"' >> /usr/local/etc/modsecurity/modsecurity.conf
+
+mv /usr/local/etc/modsecurity/crs/REQUEST-901-INITIALIZATION.conf /usr/local/etc/modsecurity/crs/REQUEST-901-INITIALIZATION.conf_OFF
+
 cd /usr/local/etc/modsecurity
 
 fetch https://raw.githubusercontent.com/Wamphyre/AutoTools/master/ip_blacklist.txt
