@@ -13,11 +13,6 @@ fetch https://downloads.wordpress.org/plugin/cloudflare-flexible-ssl.1.3.0.zip
 unzip -q  cloudflare-flexible-ssl.1.3.0.zip;
 mv cloudflare-flexible-ssl wordpress/wp-content/plugins/
 
-echo "Descargando e instalando Nginx Cache Controller"
-fetch https://downloads.wordpress.org/plugin/nginx-cache.1.0.4.zip
-unzip -q nginx-cache.1.0.4.zip;
-mv nginx-cache wordpress/wp-content/plugins/
-
 echo "Limpiando directorio y archivos temporales...";
 rm *.zip
 
