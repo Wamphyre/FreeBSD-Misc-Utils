@@ -63,7 +63,7 @@ echo ""
 
 sleep 1
 
-pkg install -y xorg slim xfce git nano htop xarchiver zip rar xfce4-mixer thunar-archive-plugin xfce-evolution mate-icon-theme-faenza slim-freebsd-black-theme vlc transmission-qt5 filezilla bluefish gimp gnome-keyring shotwell gnome-screenshot gnome-font-viewer
+pkg install -y xorg slim xfce git nano htop xarchiver zip rar pc-mixer thunar-archive-plugin xfce-evolution mate-icon-theme-faenza slim-freebsd-black-theme vlc transmission-qt5 filezilla bluefish gimp gnome-keyring shotwell gnome-screenshot gnome-font-viewer
 
 sysrc moused_enable="YES"
 
