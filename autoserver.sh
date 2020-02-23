@@ -28,9 +28,9 @@ echo ""
 
 portsnap fetch auto
 
-echo "INSTALANDO VARNISH + CERTBOT + PHP73 + MARIADB"
+echo "INSTALANDO VARNISH + CERTBOT + PHP74 + MARIADB"
 
-pkg install -y php73 php73-mysqli php73-session php73-xml php73-hash php73-ftp php73-curl php73-tokenizer php73-zlib php73-zip php73-filter php73-gd php73-openssl php73-pdo php73-bcmath php73-exif php73-fileinfo php73-pecl-imagick-im7
+pkg install -y php74 php74-mysqli php74-session php74-xml php74-hash php74-ftp php74-curl php74-tokenizer php74-zlib php74-zip php74-filter php74-gd php74-openssl php74-pdo php74-bcmath php74-exif php74-fileinfo php74-pecl-imagick-im7
 
 pkg install -y mariadb103-client mariadb103-server
 
@@ -239,7 +239,7 @@ if [ "$PHPMYADMIN" = "si" ]
 
 then cd /usr/local/www/public_html/;
 
-pkg install -y phpMyAdmin-php73
+pkg install -y phpMyAdmin-php74
 
 ln -s /usr/local/www/phpMyAdmin/ /usr/local/www/public_html/phpmyadmin
 
