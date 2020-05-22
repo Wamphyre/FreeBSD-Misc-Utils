@@ -34,9 +34,9 @@ pkg install -y php74 php74-mysqli php74-session php74-xml php74-hash php74-ftp p
 
 pkg install -y mariadb103-client mariadb103-server
 
-pkg install -y py36-certbot-nginx
+pkg install -y py37-certbot-nginx
 
-pkg install -y py36-salt
+pkg install -y py37-salt
 
 pkg install -y nano htop git libtool automake autoconf curl geoip
 
