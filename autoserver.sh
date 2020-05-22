@@ -30,7 +30,7 @@ portsnap fetch auto
 
 echo "INSTALANDO VARNISH + CERTBOT + PHP74 + MARIADB"
 
-pkg install -y php74 php74-mysqli php74-session php74-xml php74-hash php74-ftp php74-curl php74-tokenizer php74-zlib php74-zip php74-filter php74-gd php74-openssl php74-pdo php74-bcmath php74-exif php74-fileinfo php74-pecl-imagick-im7
+pkg install -y php74 php74-mysqli php74-session php74-xml php74-hash php74-ftp php74-curl php74-tokenizer php74-zlib php74-zip php74-filter php74-gd php74-openssl php74-pdo php74-bcmath php74-exif php74-fileinfo php74-pecl-imagick-im7 php74-curl
 
 pkg install -y mariadb103-client mariadb103-server
 
@@ -42,7 +42,7 @@ pkg install -y nano htop git libtool automake autoconf curl geoip
 
 pkg install -y varnish6
 
-cd /usr/ports/security/sshguard-pf
+cd /usr/ports/security/sshguard
 
 make install clean BATCH=yes
 
@@ -435,6 +435,7 @@ pass out keep state" >> /etc/pf.conf
 
 echo ""
 
+kldload pf
 service sshguard start
 
 echo "Reglas añadidas al firewall y configuradas para la interfaz $INTERFAZ"
