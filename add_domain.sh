@@ -92,15 +92,7 @@ location ~ /\. { access_log off; log_not_found off; deny all; }
         fastcgi_index  index.php;
         fastcgi_param SCRIPT_FILENAME \$request_filename;    
         include        fastcgi_params;
-        	}
-		
-    location ~ \.php\$ {
-    location ~* wp\-login\.php {
-        limit_req   zone=reqlimit  burst=1 nodelay;
-        limit_req_status 444;
-    }
-    }
-	
+        	}		
 }
 " >> $DOMINIO.conf
 
