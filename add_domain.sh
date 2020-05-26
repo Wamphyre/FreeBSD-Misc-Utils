@@ -30,6 +30,8 @@ server_name $DOMINIO;
 
 root /usr/local/www/public_html/$DOMINIO;
 index index.php index.html;
+
+gzip on;
     
     # allow POSTs to static pages
     error_page                 405    =200 \$uri;
