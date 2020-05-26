@@ -54,7 +54,7 @@ echo "COMPILANDO NGINX, POR FAVOR, SELECCIONA Y MARCA LA CASILLA MODSECURITY3"
 
 sleep 5
 
-cd /usr/ports/www/nginx/ && make install clean 
+cd /usr/ports/www/nginx-devel/ && make install clean 
 
 cd /tmp
 
