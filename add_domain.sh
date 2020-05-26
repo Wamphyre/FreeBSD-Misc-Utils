@@ -32,6 +32,10 @@ root /usr/local/www/public_html/$DOMINIO;
 index index.php index.html;
 
 gzip on;
+gzip_comp_level  4;
+gzip_min_length  1000;
+gzip_proxied     expired no-cache no-store private auth;
+gzip_types       text/plain application/x-javascript text/xml text/css application/xml;
     
     # allow POSTs to static pages
     error_page                 405    =200 \$uri;
