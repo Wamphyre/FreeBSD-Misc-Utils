@@ -31,11 +31,11 @@ server_name $DOMINIO;
 root /usr/local/www/public_html/$DOMINIO;
 index index.php index.html;
 
-gzip on;
-gzip_comp_level  4;
-gzip_min_length  1000;
-gzip_proxied     expired no-cache no-store private auth;
-gzip_types       text/plain application/x-javascript text/xml text/css application/xml;
+    gzip on;
+    gzip_comp_level  4;
+    gzip_min_length  1000;
+    gzip_proxied     expired no-cache no-store private auth;
+    gzip_types       text/plain application/x-javascript text/xml text/css application/xml;
     
     # allow POSTs to static pages
     error_page                 405    =200 \$uri;
@@ -63,19 +63,12 @@ gzip_types       text/plain application/x-javascript text/xml text/css applicati
             deny                        all;
         }	
 
-# Media: images, icons, video, audio, HTC
-location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|htc)\$ {
-	expires 1M;
-	access_log off;
-	add_header Cache-Control "public";
-}
-
-# CSS and Javascript
-location ~* \.(?:css|js)\$ {
-	expires 1y;
-	access_log off;
-	add_header Cache-Control "public";
-}
+# Static resources
+    location ~* \.(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|css|rss|atom|js|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)\$ {
+        expires max;
+        log_not_found off;
+        access_log off;
+    }
 
 location = ^/favicon.ico {
     access_log off;
