@@ -36,6 +36,13 @@ index index.php index.html;
     gzip_min_length  1000;
     gzip_proxied     expired no-cache no-store private auth;
     gzip_types       text/plain application/x-javascript text/xml text/css application/xml;
+
+   # security headers
+   add_header X-Frame-Options \"SAMEORIGIN\" always;
+   add_header X-XSS-Protection \"1; mode=block\" always;
+   add_header X-Content-Type-Options \"nosniff\" always;
+   add_header Referrer-Policy \"no-referrer-when-downgrade\" always;
+   add_header Content-Security-Policy \"default-src * data: 'unsafe-eval' 'unsafe-inline'\" always;
     
     # allow POSTs to static pages
     error_page                 405    =200 \$uri;
