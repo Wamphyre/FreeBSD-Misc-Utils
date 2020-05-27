@@ -92,6 +92,11 @@ location = ^/robots.txt {
 # block access to hidden files (.htaccess per example)
 location ~ /\. { access_log off; log_not_found off; deny all; }
 
+# Deny public access to wp-config.php
+location ~* wp-config.php {
+    deny all;
+}
+
         location ~ [^/]\.php(/|$) {
         root	/usr/local/www/public_html/$DOMINIO;
         fastcgi_pass   127.0.0.1:9000;
