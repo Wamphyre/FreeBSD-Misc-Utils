@@ -100,6 +100,10 @@ index index.php index.html;
         location ~* /xmlrpc\.php {
             deny                        all;
         }	
+	
+        location ~* /wp-config\.php {
+            deny                        all;
+        }
 
     # Static resources
     location ~* \.(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|css|rss|atom|js|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)\$ {
