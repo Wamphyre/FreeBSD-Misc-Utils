@@ -50,11 +50,11 @@ pkg install -y libxml2 libxslt modsecurity3 python git binutils pcre libgd openl
 
 echo ""
 
-echo "COMPILANDO NGINX, POR FAVOR, SELECCIONA Y MARCA LA CASILLA MODSECURITY3"
+echo "COMPILANDO NGINX, SELECCIONA MODULO MODSECURITY3"
 
 sleep 5
 
-cd /usr/ports/www/nginx-devel/ && make install clean 
+cd /usr/ports/www/nginx-devel/ && make install clean
 
 cd /tmp
 
@@ -122,7 +122,11 @@ sysrc varnishd_admin=":8081"
 
 mv /usr/local/etc/nginx/nginx.conf /usr/local/etc/nginx/nginx.conf_bk
 
+mv /usr/local/etc/nginx/mime.types /usr/local/etc/nginx/mime.types_bk
+
 cd /usr/local/etc/nginx/ && fetch https://raw.githubusercontent.com/Wamphyre/AutoTools/master/nginx.conf
+
+cd /usr/local/etc/nginx/ && fetch https://raw.githubusercontent.com/Wamphyre/AutoTools/master/mime.types
 
 mkdir conf.d
 
