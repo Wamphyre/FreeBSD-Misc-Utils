@@ -31,44 +31,22 @@ server_name $DOMINIO;
 root /usr/local/www/public_html/$DOMINIO;
 index index.php index.html;
 
-    gzip on;
-    gzip_buffers 16 8k;
-    gzip_comp_level 5;
-    gzip_disable "msie6";
-    gzip_min_length 256;
-    gzip_proxied any;
-    gzip_types
-        application/atom+xml
-        application/javascript
-        application/json
-        application/ld+json
-        application/manifest+json
-        application/rss+xml
-        application/vnd.geo+json
-        application/vnd.ms-fontobject
-        application/x-font-ttf
-        application/x-javascript
-        application/x-web-app-manifest+json
-        application/xhtml+xml
-        application/xml
-        font/opentype
-        image/bmp
-        image/svg+xml
-        image/x-icon
-        text/cache-manifest
-        text/css
-        text/javascript
-        text/plain
-        text/vcard
-        text/vnd.rim.location.xloc
-        text/vtt
-        text/x-component
-        text/x-cross-domain-policy
-        text/x-js
-        text/xml;
+   #Gzip settings
+    gzip             on;
+    gzip_comp_level  5;
+    gzip_min_length  256;
+    gzip_proxied     expired no-cache no-store private auth;
+    gzip_types       text/plain application/x-javascript text/xml text/css application/xml;
     gzip_vary on;
 
-   # security headers
+    # Static resources
+    location ~* \.(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|css|rss|atom|js|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)\$ {
+        expires max;
+        log_not_found off;
+        access_log off;
+    }
+
+   #Security headers
    add_header X-Frame-Options \"SAMEORIGIN\" always;
    add_header X-XSS-Protection \"1; mode=block\" always;
    add_header X-Content-Type-Options \"nosniff\" always;
@@ -100,37 +78,30 @@ index index.php index.html;
         location ~* /xmlrpc\.php {
             deny                        all;
         }	
-	
+
         location ~* /wp-config\.php {
             deny                        all;
         }
 
-    # Static resources
-    location ~* \.(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|css|rss|atom|js|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)\$ {
-        expires max;
+        location = ^/favicon.ico {
+        access_log off;
+        log_not_found off;
+        }
+
+        # robots noise...
+        location = ^/robots.txt {
         log_not_found off;
         access_log off;
-    }
+        allow all;
+        }
 
-location = ^/favicon.ico {
-    access_log off;
-    log_not_found off;
-}
+        # block access to hidden files (.htaccess per example)
+        location ~ /\. { access_log off; log_not_found off; deny all; }
 
-# robots noise...
-location = ^/robots.txt {
-    log_not_found off;
-    access_log off;
-    allow all;
-}
-
-# block access to hidden files (.htaccess per example)
-location ~ /\. { access_log off; log_not_found off; deny all; }
-
-# Deny public access to wp-config.php
-location ~* wp-config.php {
-    deny all;
-}
+        # Deny public access to wp-config.php
+        location ~* wp-config.php {
+        deny all;
+        }
 
         location ~ [^/]\.php(/|$) {
         root	/usr/local/www/public_html/$DOMINIO;
