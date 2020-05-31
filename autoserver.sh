@@ -124,6 +124,10 @@ mv /usr/local/etc/nginx/nginx.conf /usr/local/etc/nginx/nginx.conf_bk
 
 mv /usr/local/etc/nginx/mime.types /usr/local/etc/nginx/mime.types_bk
 
+mv /usr/local/etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf_bk
+
+cd /usr/local/etc/php-fpm.d/ && fetch https://raw.githubusercontent.com/Wamphyre/AutoTools/master/www.conf
+
 cd /usr/local/etc/nginx/ && fetch https://raw.githubusercontent.com/Wamphyre/AutoTools/master/nginx.conf
 
 cd /usr/local/etc/nginx/ && fetch https://raw.githubusercontent.com/Wamphyre/AutoTools/master/mime.types
