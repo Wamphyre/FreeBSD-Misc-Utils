@@ -3,13 +3,13 @@
 # XFCE installer for FreeBSD
 
 # Change /etc/pkg/pkg.conf quarterly repo to use the latest repo
-sed -i '' 's/quarterly/latest/g' /etc/pkg/pkg.conf
+sed -i '' 's/quarterly/latest/g' /etc/pkg/FreeBSD.conf
 
 # Update repositories and upgrade packages
 pkg update && pkg upgrade -y
 
 # Install XFCE and dependencies
-pkg install xfce xfce4-goodies slim -y
+pkg install -y xfce xfce4-goodies slim 
 
 # Configure .xinitrc for root  
 echo "exec startxfce4" > /root/.xinitrc
