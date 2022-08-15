@@ -2,7 +2,7 @@
 
 # XFCE installer for FreeBSD
 
-# Change /etc/pkg/pkg.conf quarterly repo to use the latest repo
+# Change /etc/pkg/FreeBSD.conf quarterly repo to use the latest repo
 sed -i '' 's/quarterly/latest/g' /etc/pkg/FreeBSD.conf
 
 # Update repositories and upgrade packages
