@@ -57,39 +57,14 @@ echo ""
 
 sleep 1
 
-pkg install -y xorg slim xfce xfce4-goodies thunar-archive-plugin gnome-keyring gnome-screenshot gnome-font-viewer
+pkg install -y xorg slim xfce xfce4-goodies xfce4-pulseaudio-plugin thunar-archive-plugin xarchiver unzip rar sudo bash wget htop gnome-keyring gnome-screenshot gnome-font-viewer vlc audacious audacious-plugins firefox chromium
 
 sysrc moused_enable="YES"
-
 sysrc dbus_enable="YES"
-
 sysrc hald_enable="YES"
-
 sysrc slim_enable="YES"
 
 echo ""
-
-echo ; read -p "¿Estás usando un Macbook?: " Y;
-
-echo ""
-
-if [ "$Y" = "si" ]
-
-then
-
-sysrc moused_enable="NO"
-
-echo 'wsp_load="YES"' >> /boot/loader.conf
-
-echo ""
-
-echo "Driver para el touchpad de Mac cargado"
-
-sleep 1
-
-echo ""
-
-else fi
 
 cd
 
@@ -121,109 +96,6 @@ else fi
 
 echo ""
 
-echo "Mostrando navegadores web recomendados"
-
-echo ""
-
-echo "Chromium"
-
-echo "" ; sleep 1
-
-echo "Firefox"
-
-echo "" ; sleep 1
-
-echo "Midori"
-
-echo "" ; sleep 1
-
-echo ; read -p "¿Qué navegador web quieres instalar? " browser ;
-
-echo ""
-
-if [ "$browser" = "chromium" ]
-
-then
-
-pkg install -y chromium
-
-elif [ "$browser" = "firefox" ]
-
-then 
-
-pkg install -y firefox-esr
-
-elif [ "$browser" = "midori" ]
-
-then
-
-pkg install -y midori
-
-else
-
-echo "No se instalará ningún navegador"
-
-fi
-
-echo ""
-
-echo ; read -p "¿Es esto una máquina virtual Virtualbox?: " Y;
-
-if [ "$Y" = "si" ]
-
-then
-
-pkg install -y virtualbox-ose-additions
-
-sysrc vboxguest_enable="YES"
-
-sysrc vboxservice_enable="YES"
-
-sysrc vboxservice_flags="--disable-timesync"
-
-else fi
-
-echo ""
-
-echo ; read -p "¿Quieres compilar los drivers de NVIDIA?: " gpu;
-
-echo ""
-
-if [ "$gpu" = "si" ]
-
-then
-
-echo ; read -p "¿Tienes una NVIDIA antigua o moderna?: " gpu2;
-
-if [ "$gpu2" = "antigua" ]
-
-then
-
-kldload linux.ko
-
-sysrc linux_enable="YES"
-
-cd /usr/ports/x11/nvidia-driver-340
-make install clean BATCH=yes
-cd /usr/ports/x11/nvidia-settings
-make install clean BATCH=yes
-cd /usr/ports/x11/nvidia-xconfig
-make install clean BATCH=yes
-
-echo 'nvidia_load="YES"' >> /boot/loader.conf
-
-nvidia-xconfig
-
-echo ""
-
-echo "Driver instalado"
-
-echo ""
-
-elif [ "$gpu2" = "moderna" ]
-
-then
-
 kldload linux.ko
 
 sysrc linux_enable="YES"
@@ -243,11 +115,7 @@ echo ""
 
 echo "Driver instalado"
 
-else fi
-
-else echo "No se instalarán los drivers de la GPU"
-
-fi
+echo ""
 
 echo "Optimizando Sistema"
 
@@ -258,7 +126,6 @@ sleep 2
 mv /etc/sysctl.conf /etc/sysctl.conf.bk
 touch /etc/sysctl.conf
 echo 'hw.snd.default_unit=6' >> /etc/sysctl.conf
-echo 'hw.snd.default_auto=2' >> /etc/sysctl.conf
 echo 'kern.timecounter.alloweddeviation=0' >> /etc/sysctl.conf
 echo 'hw.usb.uaudio.buffer_ms=2' >> /etc/sysctl.conf
 echo 'dev.pcm.6.bitperfect=1' >> /etc/sysctl.conf
@@ -276,6 +143,7 @@ echo 'hw.usb.no_boot_wait=0' >> /boot/loader.conf
 echo 'hw.usb.no_shutdown_wait=1' >> /boot/loader.conf
 echo 'hw.psm.synaptics_support=1' >> /boot/loader.conf
 echo 'kern.cam.scsi_delay=10000' >> /boot/loader.conf
+echo 'cuse_load="YES"' >> /boot/loader.conf
 
 touch /etc/pf.conf
 echo 'block in all' >> /etc/pf.conf
@@ -292,8 +160,9 @@ sysrc powerd_enable="YES"
 sysrc powerd_flags="-a hiadaptive"
 sysrc clear_tmp_enable="YES"
 sysrc syslogd_flags="-ss"
-sysrc sendmail_enable="NO"
+sysrc sendmail_enable="NONE"
 sysrc dumpdev="NO"
+webcamd_enable="YES"
 
 echo "Sistema optimizado"
 
