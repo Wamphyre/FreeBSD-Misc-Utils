@@ -57,7 +57,7 @@ echo ""
 
 sleep 1
 
-pkg install -y xorg slim xfce xfce4-goodies xfce4-pulseaudio-plugin thunar-archive-plugin xarchiver unzip rar sudo bash wget htop gnome-keyring gnome-screenshot gnome-font-viewer vlc audacious audacious-plugins firefox chromium
+pkg install -y xorg slim xfce xfce4-goodies xfce4-pulseaudio-plugin thunar-archive-plugin xarchiver unzip sudo bash wget htop gnome-keyring gnome-screenshot gnome-font-viewer vlc audacious audacious-plugins firefox chromium
 
 sysrc moused_enable="YES"
 sysrc dbus_enable="YES"
