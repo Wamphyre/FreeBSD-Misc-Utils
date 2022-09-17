@@ -3,61 +3,41 @@
 #xfce_desktop by Wamphyre
 #Version 1.0
 
-test $? -eq 0 || exit 1 "Necesitas ser root para ejecutar este script"
+test $? -eq 0 || exit 1 "NEED TO BE ROOT TO RUN THIS"
 
-echo "Bienvenido al Script Selector"
-
-echo ""; sleep 3
-
-echo "Este script instala un entorno de escritorio XFCE completo, optimizado y seguro"
-
-echo ""; sleep 3
-
-echo "AVISO¡¡ EJECUTA SOLO ESTE SCRIPT EN UN SISTEMA LIMPIO"
-
-echo ""
+echo "Welcome to BSD-XFCE base script"
+echo "This will install a complete, secure and optimized XFCE desktop in your FreeBSD system"
+echo "WARNING!! - Execute only in a fresh vanilla installation"
 
 sleep 5
 
 sed -i '' 's/quarterly/latest/g' /etc/pkg/FreeBSD.conf
 
-echo "Primero, actualicemos el gestor de paquetes y todos los paquetes del sistema"
+echo "Upgrading packages..."
 
-echo ""; sleep 3
+echo ""
 
 pkg update && pkg upgrade -y
 
 echo ""
 
-echo "Gestor de paquetes y paquetes instalados actualizados"
-
-echo ""; sleep 3
-
-echo "Obteniendo arbol de Ports";
+echo "Downloading Ports tree...";
 
 echo ""
-
-sleep 3
 
 portsnap fetch auto
 
 echo ""
 
-sleep 3
-
-echo "Arbol de ports extraido"
+echo "Installing XFCE and basic utilities..."
 
 echo ""
 
-sleep 3
-
-echo "Instalando XFCE..."
+pkg install -y xorg slim xfce xfce4-pulseaudio-plugin thunar-archive-plugin xarchiver unzip sudo bash wget htop gnome-keyring xfce4-screenshooter-plugin ristretto gnome-font-viewer vlc audacious audacious-plugins firefox mixer mixertui nano
 
 echo ""
 
-sleep 1
-
-pkg install -y xorg slim xfce xfce4-goodies xfce4-pulseaudio-plugin thunar-archive-plugin xarchiver unzip sudo bash wget htop gnome-keyring gnome-screenshot gnome-font-viewer vlc audacious audacious-plugins firefox chromium
+echo "Enabling basic services"
 
 sysrc moused_enable="YES"
 sysrc dbus_enable="YES"
@@ -74,15 +54,15 @@ echo 'exec xfce4-session' >> .xinitrc
 
 echo ""
 
-echo ; read -p "¿Quieres habilitar XFCE para otro usuario?: " X;
+echo ; read -p "Want to enable XFCE for a regular user? (yes/no): " X;
 
 echo ""
 
-if [ "$X" = "si" ]
+if [ "$X" = "yes" ]
 
 then
 
-echo ; read -p "Dime usuario: " user;
+echo ; read -p "For what user? " user;
 
 touch /usr/home/$user/.xinitrc
 
@@ -90,7 +70,7 @@ echo 'exec xfce4-session' >> /usr/home/$user/.xinitrc
 
 echo ""
 
-echo "$user habilitado"
+echo "$user enabled"
 
 else fi
 
@@ -113,15 +93,13 @@ nvidia-xconfig
 
 echo ""
 
-echo "Driver instalado"
+echo "Latest Nvidia drivers compiled and instaled"
 
 echo ""
 
-echo "Optimizando Sistema"
+echo "Optimizing system..."
 
 echo ""
-
-sleep 2
 
 mv /etc/sysctl.conf /etc/sysctl.conf.bk
 touch /etc/sysctl.conf
@@ -164,17 +142,11 @@ sysrc sendmail_enable="NONE"
 sysrc dumpdev="NO"
 webcamd_enable="YES"
 
-echo "Sistema optimizado"
-
-sleep 2
-
 echo ""
 
-echo "Actualizando microcódigo de la CPU..."
+echo "Updating CPU microcode..."
 
 echo ""
-
-sleep 2
 
 pkg install -y devcpu-data
 
@@ -184,28 +156,20 @@ service microcode_update start
 
 echo ""
 
-echo "Microcódigo actualizado"
+echo "Microcode updated"
 
 echo ""
 
-echo "Limpiando Sistema"
+echo "Cleaning system..."
 
 echo ""
-
-sleep 1
 
 pkg clean -y
 
 echo ""
 
-echo "Sistema limpio"
-
-echo ""
-
-echo "Por favor, reinicia ahora tu sistema"
-
-echo ""
-
-echo "xfce_desktop by Wamphyre :)"
+echo "Installation done"
+echo "Please restart your system."
+echo "BSD-XFCE by Wamphyre :)"
 
 echo ""
