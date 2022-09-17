@@ -37,6 +37,14 @@ pkg install -y xorg slim xfce xfce4-pulseaudio-plugin thunar-archive-plugin xarc
 
 echo ""
 
+echo "Enabling automount..."
+
+echo ""
+
+pkg install -y automount exfat-utils fusefs-exfat fusefs-ntfs fusefs-ext2 fusefs-hfsfuse fusefs-lkl fusefs-simple-mtpfs
+
+echo ""
+
 echo "Enabling basic services"
 
 sysrc moused_enable="YES"
@@ -93,7 +101,7 @@ nvidia-xconfig
 
 echo ""
 
-echo "Latest Nvidia drivers compiled and instaled"
+echo "Latest Nvidia drivers compiled"
 
 echo ""
 
