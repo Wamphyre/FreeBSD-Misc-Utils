@@ -67,26 +67,28 @@ echo ; read -p "Want to enable XFCE for a regular user? (yes/no): " X;
 echo ""
 
 if [ "$X" = "yes" ]
-
 then
-
-echo ; read -p "For what user? " user;
-
-touch /usr/home/$user/.xinitrc
-
-echo 'exec xfce4-session' >> /usr/home/$user/.xinitrc
-
-echo ""
-
-echo "$user enabled"
-
+    echo ; read -p "For what user? " user;
+    touch /usr/home/$user/.xinitrc
+    echo 'exec xfce4-session' >> /usr/home/$user/.xinitrc
+    echo ""
+    echo "$user enabled"
 else fi
 
 echo ""
 
-kldload linux.ko
+echo "Enabling Linux compat layer..."
 
+echo ""
+
+kldload linux.ko
 sysrc linux_enable="YES"
+
+echo ""
+
+echo "Compiling latest Nvidia drivers..."
+
+echo ""
 
 cd /usr/ports/x11/nvidia-driver
 make install clean BATCH=yes
@@ -134,6 +136,11 @@ echo 'cuse_load="YES"' >> /boot/loader.conf
 touch /etc/pf.conf
 echo 'block in all' >> /etc/pf.conf
 echo 'pass out all keep state' >> /etc/pf.conf
+
+echo "Enabling additional system services..."
+
+echo ""
+
 sysrc pf_enable="YES"
 sysrc pf_rules="/etc/pf.conf" 
 sysrc pf_flags=""
@@ -146,9 +153,12 @@ sysrc powerd_enable="YES"
 sysrc powerd_flags="-a hiadaptive"
 sysrc clear_tmp_enable="YES"
 sysrc syslogd_flags="-ss"
-sysrc sendmail_enable="NONE"
+sysrc sendmail_enable="NO"
+sysrc sendmail_msp_queue_enable="NO"
+sysrc sendmail_outbound_enable="NO"
+sysrc sendmail_submit_enable="NO"
 sysrc dumpdev="NO"
-webcamd_enable="YES"
+sysrc webcamd_enable="YES"
 
 echo ""
 
@@ -157,9 +167,7 @@ echo "Updating CPU microcode..."
 echo ""
 
 pkg install -y devcpu-data
-
 sysrc microcode_update_enable="YES"
-
 service microcode_update start
 
 echo ""
