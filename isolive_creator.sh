@@ -2,12 +2,17 @@
 
 # Variables
 ISO_NAME="FreeBSD-LiveCD.iso"
-WORK_DIR="/tmp/livecd-workdir"
-MOUNT_DIR="/tmp/livecd-mountdir"
-LIVECD_ROOT="/usr/local/livecd"
+WORK_DIR="/usr/local/liveBSD/livecd-workdir"
+MOUNT_DIR="/usr/local/liveBSD/livecd-mountdir"
+LIVECD_ROOT="/usr/local/liveBSD/livecd-root"
 
-# Crea el directorio de trabajo
+# Instala mkisofs
+pkg install -y cdrtools
+
+# Crea los directorios de trabajo
 mkdir -p ${WORK_DIR}
+mkdir -p ${MOUNT_DIR}
+mkdir -p ${LIVECD_ROOT}
 
 # Monta la imagen de FreeBSD
 mount -t unionfs /dev/ufs/root ${MOUNT_DIR}
@@ -23,7 +28,6 @@ umount ${MOUNT_DIR}
 pkg install -y sysutils/grub2-pcbsd
 
 # Copia los archivos de configuración para el LiveCD
-mkdir -p ${LIVECD_ROOT}
 cp /usr/local/share/grub/grub.cfg ${LIVECD_ROOT}
 
 # Genera la imagen ISO del LiveCD
